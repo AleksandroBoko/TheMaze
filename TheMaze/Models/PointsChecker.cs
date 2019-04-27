@@ -15,7 +15,7 @@ namespace TheMaze.Models
         public FieldTypes GetPointType(int row, int column)
         {
             var point = points[row, column];
-            return (point as Field).FieldType;
+            return (point as Point).FieldType;
         }
 
     }

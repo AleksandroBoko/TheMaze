@@ -2,12 +2,13 @@
 using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
+using TheMaze.Interfaces;
 
 namespace TheMaze.Models.GameObjects
 {
     [KnownType(typeof(GameObject))]
     [DataContract]
-    public class Player : GameObject
+    public class Player : GameObject, IGameSerialization
     {
         public const int MAX_LIFE_POINTS = 3;
 

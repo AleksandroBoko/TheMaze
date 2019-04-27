@@ -48,15 +48,15 @@
     <Compile Include="ConsoleHelpers\ConsoleHelper.cs" />
     <Compile Include="Enums\MenuItemType.cs" />
     <Compile Include="Enums\TypeFinishGame.cs" />
-    <Compile Include="Models\GameObjects\Field.cs" />
+    <Compile Include="Interfaces\IGameSerialization.cs" />
+    <Compile Include="Models\GameObjects\Point.cs" />
     <Compile Include="Models\GameObjects\GameObject.cs" />
     <Compile Include="TextHelpers\GameInfo.cs" />
     <Compile Include="Enums\FieldTypes.cs" />
     <Compile Include="Models\Configuration.cs" />
     <Compile Include="Models\GameObjects\Player.cs" />
-    <Compile Include="Models\PointsBuilder.cs" />
+    <Compile Include="Models\GameField.cs" />
     <Compile Include="Models\Drawer.cs" />
-    <Compile Include="Models\Point.cs" />
     <Compile Include="Models\PointsChecker.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -64,5 +64,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -11,7 +11,7 @@ namespace TheMaze
     {
         public static GameObject PlayerInfo { get; set; }
         public static PointsChecker PointsChecker { get; set; }
-        public static PointsBuilder PointsBuilder { get; set; }
+        public static GameField GameField { get; set; }
         public static Drawer Drawer { get; set; }
         public static GameInfo GameInfo { get; set; } 
         public static TypeFinishGame TypeFinishGame { get; set; }
@@ -31,9 +31,9 @@ namespace TheMaze
             Console.Title = Configuration.TITLE;
 
             PlayerInfo = new Player();
-            PointsBuilder = new PointsBuilder();
-            Drawer = new Drawer(PointsBuilder.Points);
-            PointsChecker = new PointsChecker(PointsBuilder.Points);
+            GameField = new GameField();
+            Drawer = new Drawer(GameField.Points);
+            PointsChecker = new PointsChecker(GameField.Points);
             GameInfo = new GameInfo();
             ConsoleHelper = new ConsoleHelper();
         }
@@ -58,7 +58,7 @@ namespace TheMaze
                         ShowGameInfo();
                         break;
                     case MenuItemType.LoadGame:
-                        if (!(PlayerInfo as Player).Load() | !PointsBuilder.Load())
+                        if (!(PlayerInfo as Player).Load() | !GameField.Load())
                         {
                             Console.WriteLine("The version of last saved game is not available");
                             Console.ReadLine();
@@ -66,7 +66,7 @@ namespace TheMaze
                         else
                         {
                             isNeedRepeatMenu = false;
-                            Drawer.SetPoints(PointsBuilder.Points);
+                            Drawer.SetPoints(GameField.Points);
                             Drawer.SetPlayer(PlayerInfo);
                             Drawer.Draw();
                             ConsoleHelper.ShowPlayerLifePoints((PlayerInfo as Player).CountLifePoints, Player.MAX_LIFE_POINTS);
@@ -226,14 +226,14 @@ namespace TheMaze
 
         private static void SaveGame()
         {
-            PointsBuilder.Save();
+            GameField.Save();
             (PlayerInfo as Player).Save();
         }
 
         static bool NextStepHandler(FieldTypes fieldTypes, int nextRowPosition, int nextColumnPosition)
         {
             var result = true;
-            var points = PointsBuilder.Points;
+            var points = GameField.Points;
             switch (fieldTypes)
             {
                 case FieldTypes.Wall:

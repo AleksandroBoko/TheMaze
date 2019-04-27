@@ -5,14 +5,15 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using TheMaze.Enums;
+using TheMaze.Interfaces;
 using TheMaze.Models.GameObjects;
 
 namespace TheMaze.Models
 {
-    [KnownType(typeof(Field))]
+    [KnownType(typeof(Point))]
     [KnownType(typeof(GameObject))]
     [DataContract]
-    public class PointsBuilder
+    public class GameField : IGameSerialization
     {
         [NonSerialized]
         private int rowNumber = Configuration.ROW_NUMBER;
@@ -25,7 +26,13 @@ namespace TheMaze.Models
         [DataMember]
         private GameObject[][] pointsToSave { get; set; }
 
-        public PointsBuilder()
+        public GameObject this[int row, int column]
+        {
+            get => Points[row, column];
+            set => Points[row, column] = value;
+        }
+
+        public GameField()
         {
             Points = new GameObject[rowNumber, columnNumber];
             Build();
@@ -48,7 +55,7 @@ namespace TheMaze.Models
             {
                 for (int j = 0; j < columnNumber; j++)
                 {
-                    Points[i, j] = new Field()
+                    Points[i, j] = new Point()
                     {
                         ColorBackground = ConsoleColor.Yellow,
                         ColorForeground = ConsoleColor.Black,
@@ -168,9 +175,9 @@ namespace TheMaze.Models
 
             foreach (var routePoint in routePoints)
             {
-                (Points[routePoint.RowIndex, routePoint.ColumnIndex] as Field).ColorBackground = ConsoleColor.Black;
+                (Points[routePoint.RowIndex, routePoint.ColumnIndex] as Point).ColorBackground = ConsoleColor.Black;
                 Points[routePoint.RowIndex, routePoint.ColumnIndex].ColorForeground = ConsoleColor.White;
-                (Points[routePoint.RowIndex, routePoint.ColumnIndex] as Field).FieldType = FieldTypes.Route;
+                (Points[routePoint.RowIndex, routePoint.ColumnIndex] as Point).FieldType = FieldTypes.Route;
                 Points[routePoint.RowIndex, routePoint.ColumnIndex].Symbol = ' ';
             }
         }
@@ -199,9 +206,9 @@ namespace TheMaze.Models
                         break;
                 }
 
-                (Points[rowPosition, columnPosition] as Field).ColorBackground = ConsoleColor.DarkGray;
-                (Points[rowPosition, columnPosition] as Field).ColorForeground = ConsoleColor.Black;
-                (Points[rowPosition, columnPosition] as Field).FieldType = FieldTypes.ClosedDoor;
+                (Points[rowPosition, columnPosition] as Point).ColorBackground = ConsoleColor.DarkGray;
+                (Points[rowPosition, columnPosition] as Point).ColorForeground = ConsoleColor.Black;
+                (Points[rowPosition, columnPosition] as Point).FieldType = FieldTypes.ClosedDoor;
                 Points[rowPosition, columnPosition].Symbol = '#';
 
                 addedClosedDoors++;
@@ -212,7 +219,7 @@ namespace TheMaze.Models
         {
             Points [19, 17].ColorBackground = ConsoleColor.Green;
             Points [19, 17].ColorForeground = ConsoleColor.White;
-            (Points [19, 17] as Field).FieldType = FieldTypes.OpenedDoor;
+            (Points [19, 17] as Point).FieldType = FieldTypes.OpenedDoor;
             Points [19, 17].Symbol = 'E';
         }
 
@@ -228,7 +235,7 @@ namespace TheMaze.Models
             {
                 Points[routePoint.RowIndex, routePoint.ColumnIndex].ColorBackground = ConsoleColor.Black;
                 Points[routePoint.RowIndex, routePoint.ColumnIndex].ColorForeground = ConsoleColor.Blue;
-                (Points[routePoint.RowIndex, routePoint.ColumnIndex] as Field).FieldType = FieldTypes.Key;
+                (Points[routePoint.RowIndex, routePoint.ColumnIndex] as Point).FieldType = FieldTypes.Key;
                 Points[routePoint.RowIndex, routePoint.ColumnIndex].IsActive = true;
                 Points[routePoint.RowIndex, routePoint.ColumnIndex].Symbol = 'k';
             }
@@ -351,7 +358,7 @@ namespace TheMaze.Models
             {
                 Points[routePoint.RowIndex, routePoint.ColumnIndex].ColorBackground = ConsoleColor.Black;
                 Points[routePoint.RowIndex, routePoint.ColumnIndex].ColorForeground = ConsoleColor.Cyan;
-                (Points[routePoint.RowIndex, routePoint.ColumnIndex] as Field).FieldType = FieldTypes.Coin;
+                (Points[routePoint.RowIndex, routePoint.ColumnIndex] as Point).FieldType = FieldTypes.Coin;
                 Points[routePoint.RowIndex, routePoint.ColumnIndex].IsActive = true;
                 Points[routePoint.RowIndex, routePoint.ColumnIndex].Symbol = 'o';
             }
@@ -376,7 +383,7 @@ namespace TheMaze.Models
             {
                 Points[routePoint.RowIndex, routePoint.ColumnIndex].ColorBackground = ConsoleColor.Black;
                 Points[routePoint.RowIndex, routePoint.ColumnIndex].ColorForeground = ConsoleColor.Red;
-                (Points[routePoint.RowIndex, routePoint.ColumnIndex] as Field).FieldType = FieldTypes.Trap;
+                (Points[routePoint.RowIndex, routePoint.ColumnIndex] as Point).FieldType = FieldTypes.Trap;
                 Points[routePoint.RowIndex, routePoint.ColumnIndex].IsActive = true;
                 Points[routePoint.RowIndex, routePoint.ColumnIndex].Symbol = 'x';
             }
@@ -418,7 +425,7 @@ namespace TheMaze.Models
         public void Save()
         {
             ConvertPointsToArrayToArrays();
-            var serializer = new DataContractJsonSerializer(typeof(PointsBuilder));
+            var serializer = new DataContractJsonSerializer(typeof(GameField));
             var path = $"{Path.GetFullPath(AppDomain.CurrentDomain.BaseDirectory)}Points.json";
             if (File.Exists(path))
             {
@@ -434,7 +441,7 @@ namespace TheMaze.Models
         public bool Load()
         {
             var result = true;
-            var serializer = new DataContractJsonSerializer(typeof(PointsBuilder));
+            var serializer = new DataContractJsonSerializer(typeof(GameField));
             var path = $"{Path.GetFullPath(AppDomain.CurrentDomain.BaseDirectory)}Points.json";
 
             if (!File.Exists(path))
@@ -449,7 +456,7 @@ namespace TheMaze.Models
                     var pointsObject = serializer.ReadObject(stream);
                     if (pointsObject != null)
                     {
-                        var pointsBuilder = (PointsBuilder) pointsObject;
+                        var pointsBuilder = (GameField) pointsObject;
                         pointsToSave = pointsBuilder.pointsToSave;
 
                         if (pointsToSave != null && pointsToSave.Any())
