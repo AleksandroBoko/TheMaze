@@ -10,7 +10,7 @@ using TheMaze.Models.GameObjects;
 
 namespace TheMaze.Models
 {
-    [KnownType(typeof(Point))]
+    [KnownType(typeof(Cell))]
     [KnownType(typeof(GameObject))]
     [DataContract]
     public class GameField : IGameSerialization
@@ -21,20 +21,20 @@ namespace TheMaze.Models
         [NonSerialized]
         private int columnNumber = Configuration.COLUMN_NUMBER;
 
-        public GameObject[,] Points { get; private set; }
+        public GameObject[,] Cells { get; private set; }
 
         [DataMember]
-        private GameObject[][] pointsToSave { get; set; }
+        private GameObject[][] cellsToSave { get; set; }
 
         public GameObject this[int row, int column]
         {
-            get => Points[row, column];
-            set => Points[row, column] = value;
+            get => Cells[row, column];
+            set => Cells[row, column] = value;
         }
 
         public GameField()
         {
-            Points = new GameObject[rowNumber, columnNumber];
+            Cells = new GameObject[rowNumber, columnNumber];
             Build();
         }
 
@@ -46,6 +46,7 @@ namespace TheMaze.Models
             BuildOpenedDoor();
             BuildCoins();
             BuildTraps();
+            BuildDeadlyTraps();
             BuildKeys();
         }
 
@@ -55,7 +56,7 @@ namespace TheMaze.Models
             {
                 for (int j = 0; j < columnNumber; j++)
                 {
-                    Points[i, j] = new Point()
+                    Cells[i, j] = new Cell()
                     {
                         ColorBackground = ConsoleColor.Yellow,
                         ColorForeground = ConsoleColor.Black,
@@ -69,116 +70,116 @@ namespace TheMaze.Models
 
         private void BuildRoute()
         {
-            var routePoints = new List<RoutePoint>();
-            routePoints.Add(new RoutePoint() { RowIndex = 0, ColumnIndex = 0 });
-            routePoints.Add(new RoutePoint() { RowIndex = 0, ColumnIndex = 3 });
-            routePoints.Add(new RoutePoint() { RowIndex = 0, ColumnIndex = 4 });
-            routePoints.Add(new RoutePoint() { RowIndex = 0, ColumnIndex = 5 });
+            var routeCells = new List<CellPosition>();
+            routeCells.Add(new CellPosition() { RowIndex = 0, ColumnIndex = 0 });
+            routeCells.Add(new CellPosition() { RowIndex = 0, ColumnIndex = 3 });
+            routeCells.Add(new CellPosition() { RowIndex = 0, ColumnIndex = 4 });
+            routeCells.Add(new CellPosition() { RowIndex = 0, ColumnIndex = 5 });
 
-            routePoints.Add(new RoutePoint() { RowIndex = 1, ColumnIndex = 0});
-            routePoints.Add(new RoutePoint() { RowIndex = 1, ColumnIndex = 2 });
-            routePoints.Add(new RoutePoint() { RowIndex = 1, ColumnIndex = 5 });
-            routePoints.Add(new RoutePoint() { RowIndex = 1, ColumnIndex = 7 });
-            routePoints.Add(new RoutePoint() { RowIndex = 1, ColumnIndex = 8 });
-            routePoints.Add(new RoutePoint() { RowIndex = 1, ColumnIndex = 9 });
+            routeCells.Add(new CellPosition() { RowIndex = 1, ColumnIndex = 0});
+            routeCells.Add(new CellPosition() { RowIndex = 1, ColumnIndex = 2 });
+            routeCells.Add(new CellPosition() { RowIndex = 1, ColumnIndex = 5 });
+            routeCells.Add(new CellPosition() { RowIndex = 1, ColumnIndex = 7 });
+            routeCells.Add(new CellPosition() { RowIndex = 1, ColumnIndex = 8 });
+            routeCells.Add(new CellPosition() { RowIndex = 1, ColumnIndex = 9 });
 
-            routePoints.Add(new RoutePoint() { RowIndex = 2, ColumnIndex = 0 });
-            routePoints.Add(new RoutePoint() { RowIndex = 2, ColumnIndex = 1 });
-            routePoints.Add(new RoutePoint() { RowIndex = 2, ColumnIndex = 3 });
-            routePoints.Add(new RoutePoint() { RowIndex = 2, ColumnIndex = 5 });
-            routePoints.Add(new RoutePoint() { RowIndex = 2, ColumnIndex = 11 });
-            routePoints.Add(new RoutePoint() { RowIndex = 2, ColumnIndex = 12 });
-            routePoints.Add(new RoutePoint() { RowIndex = 2, ColumnIndex = 13 });
-            routePoints.Add(new RoutePoint() { RowIndex = 2, ColumnIndex = 14 });
-            routePoints.Add(new RoutePoint() { RowIndex = 2, ColumnIndex = 17 });
+            routeCells.Add(new CellPosition() { RowIndex = 2, ColumnIndex = 0 });
+            routeCells.Add(new CellPosition() { RowIndex = 2, ColumnIndex = 1 });
+            routeCells.Add(new CellPosition() { RowIndex = 2, ColumnIndex = 3 });
+            routeCells.Add(new CellPosition() { RowIndex = 2, ColumnIndex = 5 });
+            routeCells.Add(new CellPosition() { RowIndex = 2, ColumnIndex = 11 });
+            routeCells.Add(new CellPosition() { RowIndex = 2, ColumnIndex = 12 });
+            routeCells.Add(new CellPosition() { RowIndex = 2, ColumnIndex = 13 });
+            routeCells.Add(new CellPosition() { RowIndex = 2, ColumnIndex = 14 });
+            routeCells.Add(new CellPosition() { RowIndex = 2, ColumnIndex = 17 });
 
-            routePoints.Add(new RoutePoint() { RowIndex = 3, ColumnIndex = 3 });
-            routePoints.Add(new RoutePoint() { RowIndex = 3, ColumnIndex = 7 });
-            routePoints.Add(new RoutePoint() { RowIndex = 3, ColumnIndex = 9 });
-            routePoints.Add(new RoutePoint() { RowIndex = 3, ColumnIndex = 15 });
-            routePoints.Add(new RoutePoint() { RowIndex = 3, ColumnIndex = 16 });
-            routePoints.Add(new RoutePoint() { RowIndex = 3, ColumnIndex = 18 });
+            routeCells.Add(new CellPosition() { RowIndex = 3, ColumnIndex = 3 });
+            routeCells.Add(new CellPosition() { RowIndex = 3, ColumnIndex = 7 });
+            routeCells.Add(new CellPosition() { RowIndex = 3, ColumnIndex = 9 });
+            routeCells.Add(new CellPosition() { RowIndex = 3, ColumnIndex = 15 });
+            routeCells.Add(new CellPosition() { RowIndex = 3, ColumnIndex = 16 });
+            routeCells.Add(new CellPosition() { RowIndex = 3, ColumnIndex = 18 });
 
-            routePoints.Add(new RoutePoint() { RowIndex = 5, ColumnIndex = 4 });
-            routePoints.Add(new RoutePoint() { RowIndex = 5, ColumnIndex = 11 });
+            routeCells.Add(new CellPosition() { RowIndex = 5, ColumnIndex = 4 });
+            routeCells.Add(new CellPosition() { RowIndex = 5, ColumnIndex = 11 });
 
-            routePoints.Add(new RoutePoint() { RowIndex = 6, ColumnIndex = 1 });
-            routePoints.Add(new RoutePoint() { RowIndex = 6, ColumnIndex = 2 });
-            routePoints.Add(new RoutePoint() { RowIndex = 6, ColumnIndex = 5 });
-            routePoints.Add(new RoutePoint() { RowIndex = 6, ColumnIndex = 13 });
-            routePoints.Add(new RoutePoint() { RowIndex = 6, ColumnIndex = 14 });
+            routeCells.Add(new CellPosition() { RowIndex = 6, ColumnIndex = 1 });
+            routeCells.Add(new CellPosition() { RowIndex = 6, ColumnIndex = 2 });
+            routeCells.Add(new CellPosition() { RowIndex = 6, ColumnIndex = 5 });
+            routeCells.Add(new CellPosition() { RowIndex = 6, ColumnIndex = 13 });
+            routeCells.Add(new CellPosition() { RowIndex = 6, ColumnIndex = 14 });
 
-            routePoints.Add(new RoutePoint() { RowIndex = 7, ColumnIndex = 5 });
-            routePoints.Add(new RoutePoint() { RowIndex = 7, ColumnIndex = 8 });
-            routePoints.Add(new RoutePoint() { RowIndex = 7, ColumnIndex = 9 });
+            routeCells.Add(new CellPosition() { RowIndex = 7, ColumnIndex = 5 });
+            routeCells.Add(new CellPosition() { RowIndex = 7, ColumnIndex = 8 });
+            routeCells.Add(new CellPosition() { RowIndex = 7, ColumnIndex = 9 });
 
-            routePoints.Add(new RoutePoint() { RowIndex = 8, ColumnIndex = 3 });
-            routePoints.Add(new RoutePoint() { RowIndex = 8, ColumnIndex = 5 });
-            routePoints.Add(new RoutePoint() { RowIndex = 8, ColumnIndex = 15 });
-            routePoints.Add(new RoutePoint() { RowIndex = 8, ColumnIndex = 17 });
+            routeCells.Add(new CellPosition() { RowIndex = 8, ColumnIndex = 3 });
+            routeCells.Add(new CellPosition() { RowIndex = 8, ColumnIndex = 5 });
+            routeCells.Add(new CellPosition() { RowIndex = 8, ColumnIndex = 15 });
+            routeCells.Add(new CellPosition() { RowIndex = 8, ColumnIndex = 17 });
 
-            routePoints.Add(new RoutePoint() { RowIndex = 9, ColumnIndex = 9 });
-            routePoints.Add(new RoutePoint() { RowIndex = 9, ColumnIndex = 10 });
+            routeCells.Add(new CellPosition() { RowIndex = 9, ColumnIndex = 9 });
+            routeCells.Add(new CellPosition() { RowIndex = 9, ColumnIndex = 10 });
 
-            routePoints.Add(new RoutePoint() { RowIndex = 10, ColumnIndex = 3 });
-            routePoints.Add(new RoutePoint() { RowIndex = 10, ColumnIndex = 5 });
-            routePoints.Add(new RoutePoint() { RowIndex = 10, ColumnIndex = 6 });
-            routePoints.Add(new RoutePoint() { RowIndex = 10, ColumnIndex = 7 });
-            routePoints.Add(new RoutePoint() { RowIndex = 10, ColumnIndex = 13 });
-            routePoints.Add(new RoutePoint() { RowIndex = 10, ColumnIndex = 14 });
+            routeCells.Add(new CellPosition() { RowIndex = 10, ColumnIndex = 3 });
+            routeCells.Add(new CellPosition() { RowIndex = 10, ColumnIndex = 5 });
+            routeCells.Add(new CellPosition() { RowIndex = 10, ColumnIndex = 6 });
+            routeCells.Add(new CellPosition() { RowIndex = 10, ColumnIndex = 7 });
+            routeCells.Add(new CellPosition() { RowIndex = 10, ColumnIndex = 13 });
+            routeCells.Add(new CellPosition() { RowIndex = 10, ColumnIndex = 14 });
 
-            routePoints.Add(new RoutePoint() { RowIndex = 11, ColumnIndex = 11 });
-            routePoints.Add(new RoutePoint() { RowIndex = 11, ColumnIndex = 12 });
+            routeCells.Add(new CellPosition() { RowIndex = 11, ColumnIndex = 11 });
+            routeCells.Add(new CellPosition() { RowIndex = 11, ColumnIndex = 12 });
 
-            routePoints.Add(new RoutePoint() { RowIndex = 12, ColumnIndex = 2 });
-            routePoints.Add(new RoutePoint() { RowIndex = 12, ColumnIndex = 3 });
-            routePoints.Add(new RoutePoint() { RowIndex = 12, ColumnIndex = 5 });
-            routePoints.Add(new RoutePoint() { RowIndex = 12, ColumnIndex = 13 });
-            routePoints.Add(new RoutePoint() { RowIndex = 12, ColumnIndex = 14 });
-            routePoints.Add(new RoutePoint() { RowIndex = 12, ColumnIndex = 16 });
-            routePoints.Add(new RoutePoint() { RowIndex = 12, ColumnIndex = 17 });
+            routeCells.Add(new CellPosition() { RowIndex = 12, ColumnIndex = 2 });
+            routeCells.Add(new CellPosition() { RowIndex = 12, ColumnIndex = 3 });
+            routeCells.Add(new CellPosition() { RowIndex = 12, ColumnIndex = 5 });
+            routeCells.Add(new CellPosition() { RowIndex = 12, ColumnIndex = 13 });
+            routeCells.Add(new CellPosition() { RowIndex = 12, ColumnIndex = 14 });
+            routeCells.Add(new CellPosition() { RowIndex = 12, ColumnIndex = 16 });
+            routeCells.Add(new CellPosition() { RowIndex = 12, ColumnIndex = 17 });
 
-            routePoints.Add(new RoutePoint() { RowIndex = 13, ColumnIndex = 7 });
-            routePoints.Add(new RoutePoint() { RowIndex = 13, ColumnIndex = 10 });
+            routeCells.Add(new CellPosition() { RowIndex = 13, ColumnIndex = 7 });
+            routeCells.Add(new CellPosition() { RowIndex = 13, ColumnIndex = 10 });
 
-            routePoints.Add(new RoutePoint() { RowIndex = 14, ColumnIndex = 10 });
-            routePoints.Add(new RoutePoint() { RowIndex = 14, ColumnIndex = 12 });
-            routePoints.Add(new RoutePoint() { RowIndex = 14, ColumnIndex = 13 });
+            routeCells.Add(new CellPosition() { RowIndex = 14, ColumnIndex = 10 });
+            routeCells.Add(new CellPosition() { RowIndex = 14, ColumnIndex = 12 });
+            routeCells.Add(new CellPosition() { RowIndex = 14, ColumnIndex = 13 });
 
-            routePoints.Add(new RoutePoint() { RowIndex = 15, ColumnIndex = 2 });
-            routePoints.Add(new RoutePoint() { RowIndex = 15, ColumnIndex = 3 });
-            routePoints.Add(new RoutePoint() { RowIndex = 15, ColumnIndex = 5 });
-            routePoints.Add(new RoutePoint() { RowIndex = 15, ColumnIndex = 6 });
-            routePoints.Add(new RoutePoint() { RowIndex = 15, ColumnIndex = 9 });
-            routePoints.Add(new RoutePoint() { RowIndex = 15, ColumnIndex = 16 });
-            routePoints.Add(new RoutePoint() { RowIndex = 15, ColumnIndex = 18 });
+            routeCells.Add(new CellPosition() { RowIndex = 15, ColumnIndex = 2 });
+            routeCells.Add(new CellPosition() { RowIndex = 15, ColumnIndex = 3 });
+            routeCells.Add(new CellPosition() { RowIndex = 15, ColumnIndex = 5 });
+            routeCells.Add(new CellPosition() { RowIndex = 15, ColumnIndex = 6 });
+            routeCells.Add(new CellPosition() { RowIndex = 15, ColumnIndex = 9 });
+            routeCells.Add(new CellPosition() { RowIndex = 15, ColumnIndex = 16 });
+            routeCells.Add(new CellPosition() { RowIndex = 15, ColumnIndex = 18 });
 
-            routePoints.Add(new RoutePoint() { RowIndex = 16, ColumnIndex = 1 });
-            routePoints.Add(new RoutePoint() { RowIndex = 16, ColumnIndex = 8 });
-            routePoints.Add(new RoutePoint() { RowIndex = 16, ColumnIndex = 11 });
-            routePoints.Add(new RoutePoint() { RowIndex = 16, ColumnIndex = 13 });
+            routeCells.Add(new CellPosition() { RowIndex = 16, ColumnIndex = 1 });
+            routeCells.Add(new CellPosition() { RowIndex = 16, ColumnIndex = 8 });
+            routeCells.Add(new CellPosition() { RowIndex = 16, ColumnIndex = 11 });
+            routeCells.Add(new CellPosition() { RowIndex = 16, ColumnIndex = 13 });
 
-            routePoints.Add(new RoutePoint() { RowIndex = 17, ColumnIndex = 6 });
-            routePoints.Add(new RoutePoint() { RowIndex = 17, ColumnIndex = 8 });
-            routePoints.Add(new RoutePoint() { RowIndex = 17, ColumnIndex = 9 });
-            routePoints.Add(new RoutePoint() { RowIndex = 17, ColumnIndex = 16 });
-            routePoints.Add(new RoutePoint() { RowIndex = 17, ColumnIndex = 17 });
+            routeCells.Add(new CellPosition() { RowIndex = 17, ColumnIndex = 6 });
+            routeCells.Add(new CellPosition() { RowIndex = 17, ColumnIndex = 8 });
+            routeCells.Add(new CellPosition() { RowIndex = 17, ColumnIndex = 9 });
+            routeCells.Add(new CellPosition() { RowIndex = 17, ColumnIndex = 16 });
+            routeCells.Add(new CellPosition() { RowIndex = 17, ColumnIndex = 17 });
 
-            routePoints.Add(new RoutePoint() { RowIndex = 18, ColumnIndex = 1 });
-            routePoints.Add(new RoutePoint() { RowIndex = 18, ColumnIndex = 3 });
-            routePoints.Add(new RoutePoint() { RowIndex = 18, ColumnIndex = 5 });
-            routePoints.Add(new RoutePoint() { RowIndex = 18, ColumnIndex = 10 });
-            routePoints.Add(new RoutePoint() { RowIndex = 18, ColumnIndex = 11 });
-            routePoints.Add(new RoutePoint() { RowIndex = 18, ColumnIndex = 15 });
+            routeCells.Add(new CellPosition() { RowIndex = 18, ColumnIndex = 1 });
+            routeCells.Add(new CellPosition() { RowIndex = 18, ColumnIndex = 3 });
+            routeCells.Add(new CellPosition() { RowIndex = 18, ColumnIndex = 5 });
+            routeCells.Add(new CellPosition() { RowIndex = 18, ColumnIndex = 10 });
+            routeCells.Add(new CellPosition() { RowIndex = 18, ColumnIndex = 11 });
+            routeCells.Add(new CellPosition() { RowIndex = 18, ColumnIndex = 15 });
 
-            routePoints.Add(new RoutePoint() { RowIndex = 19, ColumnIndex = 6 });
+            routeCells.Add(new CellPosition() { RowIndex = 19, ColumnIndex = 6 });
 
-            foreach (var routePoint in routePoints)
+            foreach (var routeCell in routeCells)
             {
-                (Points[routePoint.RowIndex, routePoint.ColumnIndex] as Point).ColorBackground = ConsoleColor.Black;
-                Points[routePoint.RowIndex, routePoint.ColumnIndex].ColorForeground = ConsoleColor.White;
-                (Points[routePoint.RowIndex, routePoint.ColumnIndex] as Point).FieldType = FieldTypes.Route;
-                Points[routePoint.RowIndex, routePoint.ColumnIndex].Symbol = ' ';
+                (Cells[routeCell.RowIndex, routeCell.ColumnIndex] as Cell).ColorBackground = ConsoleColor.Black;
+                Cells[routeCell.RowIndex, routeCell.ColumnIndex].ColorForeground = ConsoleColor.White;
+                (Cells[routeCell.RowIndex, routeCell.ColumnIndex] as Cell).FieldType = FieldTypes.Route;
+                Cells[routeCell.RowIndex, routeCell.ColumnIndex].Symbol = ' ';
             }
         }
 
@@ -206,10 +207,10 @@ namespace TheMaze.Models
                         break;
                 }
 
-                (Points[rowPosition, columnPosition] as Point).ColorBackground = ConsoleColor.DarkGray;
-                (Points[rowPosition, columnPosition] as Point).ColorForeground = ConsoleColor.Black;
-                (Points[rowPosition, columnPosition] as Point).FieldType = FieldTypes.ClosedDoor;
-                Points[rowPosition, columnPosition].Symbol = '#';
+                (Cells[rowPosition, columnPosition] as Cell).ColorBackground = ConsoleColor.DarkGray;
+                (Cells[rowPosition, columnPosition] as Cell).ColorForeground = ConsoleColor.Black;
+                (Cells[rowPosition, columnPosition] as Cell).FieldType = FieldTypes.ClosedDoor;
+                Cells[rowPosition, columnPosition].Symbol = '#';
 
                 addedClosedDoors++;
             }
@@ -217,216 +218,242 @@ namespace TheMaze.Models
 
         private void BuildOpenedDoor()
         {
-            Points [19, 17].ColorBackground = ConsoleColor.Green;
-            Points [19, 17].ColorForeground = ConsoleColor.White;
-            (Points [19, 17] as Point).FieldType = FieldTypes.OpenedDoor;
-            Points [19, 17].Symbol = 'E';
+            Cells [19, 17].ColorBackground = ConsoleColor.Green;
+            Cells [19, 17].ColorForeground = ConsoleColor.White;
+            (Cells [19, 17] as Cell).FieldType = FieldTypes.OpenedDoor;
+            Cells [19, 17].Symbol = 'E';
         }
 
         private void BuildKeys()
         {
-            var routePoints = new List<RoutePoint>();
+            var cellsKeys = new List<CellPosition>();
 
-            routePoints.Add(new RoutePoint() { RowIndex = 1, ColumnIndex = 18 });
-            routePoints.Add(new RoutePoint() { RowIndex = 13, ColumnIndex = 16 });
-            routePoints.Add(new RoutePoint() { RowIndex = 11, ColumnIndex = 1 });
+            cellsKeys.Add(new CellPosition() { RowIndex = 1, ColumnIndex = 18 });
+            cellsKeys.Add(new CellPosition() { RowIndex = 13, ColumnIndex = 16 });
+            cellsKeys.Add(new CellPosition() { RowIndex = 11, ColumnIndex = 1 });
 
-            foreach (var routePoint in routePoints)
+            foreach (var cellKey in cellsKeys)
             {
-                Points[routePoint.RowIndex, routePoint.ColumnIndex].ColorBackground = ConsoleColor.Black;
-                Points[routePoint.RowIndex, routePoint.ColumnIndex].ColorForeground = ConsoleColor.Blue;
-                (Points[routePoint.RowIndex, routePoint.ColumnIndex] as Point).FieldType = FieldTypes.Key;
-                Points[routePoint.RowIndex, routePoint.ColumnIndex].IsActive = true;
-                Points[routePoint.RowIndex, routePoint.ColumnIndex].Symbol = 'k';
+                Cells[cellKey.RowIndex, cellKey.ColumnIndex].ColorBackground = ConsoleColor.Black;
+                Cells[cellKey.RowIndex, cellKey.ColumnIndex].ColorForeground = ConsoleColor.Blue;
+                (Cells[cellKey.RowIndex, cellKey.ColumnIndex] as Cell).FieldType = FieldTypes.Key;
+                Cells[cellKey.RowIndex, cellKey.ColumnIndex].IsActive = true;
+                Cells[cellKey.RowIndex, cellKey.ColumnIndex].Symbol = 'k';
             }
         }
 
         private void BuildCoins()
         {
-            var routePoints = new List<RoutePoint>();
+            var cellsCoins = new List<CellPosition>();
 
-            routePoints.Add(new RoutePoint() { RowIndex = 0, ColumnIndex = 2 });
+            cellsCoins.Add(new CellPosition() { RowIndex = 0, ColumnIndex = 2 });
 
-            routePoints.Add(new RoutePoint() { RowIndex = 1, ColumnIndex = 10 });
-            routePoints.Add(new RoutePoint() { RowIndex = 1, ColumnIndex = 6 });
-            routePoints.Add(new RoutePoint() { RowIndex = 1, ColumnIndex = 17 });
+            cellsCoins.Add(new CellPosition() { RowIndex = 1, ColumnIndex = 10 });
+            cellsCoins.Add(new CellPosition() { RowIndex = 1, ColumnIndex = 6 });
+            cellsCoins.Add(new CellPosition() { RowIndex = 1, ColumnIndex = 17 });
 
-            routePoints.Add(new RoutePoint() { RowIndex = 2, ColumnIndex = 2 });
-            routePoints.Add(new RoutePoint() { RowIndex = 2, ColumnIndex = 10 });
-            routePoints.Add(new RoutePoint() { RowIndex = 2, ColumnIndex = 15 });
+            cellsCoins.Add(new CellPosition() { RowIndex = 2, ColumnIndex = 2 });
+            cellsCoins.Add(new CellPosition() { RowIndex = 2, ColumnIndex = 10 });
+            cellsCoins.Add(new CellPosition() { RowIndex = 2, ColumnIndex = 15 });
 
-            routePoints.Add(new RoutePoint() { RowIndex = 3, ColumnIndex = 5 });
-            routePoints.Add(new RoutePoint() { RowIndex = 3, ColumnIndex = 8 });
-            routePoints.Add(new RoutePoint() { RowIndex = 3, ColumnIndex = 10 });
-            routePoints.Add(new RoutePoint() { RowIndex = 3, ColumnIndex = 17 });
+            cellsCoins.Add(new CellPosition() { RowIndex = 3, ColumnIndex = 5 });
+            cellsCoins.Add(new CellPosition() { RowIndex = 3, ColumnIndex = 8 });
+            cellsCoins.Add(new CellPosition() { RowIndex = 3, ColumnIndex = 10 });
+            cellsCoins.Add(new CellPosition() { RowIndex = 3, ColumnIndex = 17 });
 
-            routePoints.Add(new RoutePoint() { RowIndex = 4, ColumnIndex = 3 });
-            routePoints.Add(new RoutePoint() { RowIndex = 4, ColumnIndex = 10 });
-            routePoints.Add(new RoutePoint() { RowIndex = 4, ColumnIndex = 18 });
+            cellsCoins.Add(new CellPosition() { RowIndex = 4, ColumnIndex = 3 });
+            cellsCoins.Add(new CellPosition() { RowIndex = 4, ColumnIndex = 10 });
+            cellsCoins.Add(new CellPosition() { RowIndex = 4, ColumnIndex = 18 });
 
-            routePoints.Add(new RoutePoint() { RowIndex = 5, ColumnIndex = 3 });
-            routePoints.Add(new RoutePoint() { RowIndex = 5, ColumnIndex = 10 });
-            routePoints.Add(new RoutePoint() { RowIndex = 5, ColumnIndex = 12 });
-            routePoints.Add(new RoutePoint() { RowIndex = 5, ColumnIndex = 18 });
+            cellsCoins.Add(new CellPosition() { RowIndex = 5, ColumnIndex = 3 });
+            cellsCoins.Add(new CellPosition() { RowIndex = 5, ColumnIndex = 10 });
+            cellsCoins.Add(new CellPosition() { RowIndex = 5, ColumnIndex = 12 });
+            cellsCoins.Add(new CellPosition() { RowIndex = 5, ColumnIndex = 18 });
 
-            routePoints.Add(new RoutePoint() { RowIndex = 6, ColumnIndex = 0 });
-            routePoints.Add(new RoutePoint() { RowIndex = 6, ColumnIndex = 4 });
-            routePoints.Add(new RoutePoint() { RowIndex = 6, ColumnIndex = 6 });
-            routePoints.Add(new RoutePoint() { RowIndex = 6, ColumnIndex = 12 });
-            routePoints.Add(new RoutePoint() { RowIndex = 6, ColumnIndex = 15 });
-            routePoints.Add(new RoutePoint() { RowIndex = 6, ColumnIndex = 18 });
+            cellsCoins.Add(new CellPosition() { RowIndex = 6, ColumnIndex = 0 });
+            cellsCoins.Add(new CellPosition() { RowIndex = 6, ColumnIndex = 4 });
+            cellsCoins.Add(new CellPosition() { RowIndex = 6, ColumnIndex = 6 });
+            cellsCoins.Add(new CellPosition() { RowIndex = 6, ColumnIndex = 12 });
+            cellsCoins.Add(new CellPosition() { RowIndex = 6, ColumnIndex = 15 });
+            cellsCoins.Add(new CellPosition() { RowIndex = 6, ColumnIndex = 18 });
 
-            routePoints.Add(new RoutePoint() { RowIndex = 7, ColumnIndex = 2 });
-            routePoints.Add(new RoutePoint() { RowIndex = 7, ColumnIndex = 7 });
-            routePoints.Add(new RoutePoint() { RowIndex = 7, ColumnIndex = 10 });
-            routePoints.Add(new RoutePoint() { RowIndex = 7, ColumnIndex = 13 });
-            routePoints.Add(new RoutePoint() { RowIndex = 7, ColumnIndex = 15 });
-            routePoints.Add(new RoutePoint() { RowIndex = 7, ColumnIndex = 18 });
+            cellsCoins.Add(new CellPosition() { RowIndex = 7, ColumnIndex = 2 });
+            cellsCoins.Add(new CellPosition() { RowIndex = 7, ColumnIndex = 7 });
+            cellsCoins.Add(new CellPosition() { RowIndex = 7, ColumnIndex = 10 });
+            cellsCoins.Add(new CellPosition() { RowIndex = 7, ColumnIndex = 13 });
+            cellsCoins.Add(new CellPosition() { RowIndex = 7, ColumnIndex = 15 });
+            cellsCoins.Add(new CellPosition() { RowIndex = 7, ColumnIndex = 18 });
 
-            routePoints.Add(new RoutePoint() { RowIndex = 8, ColumnIndex = 2 });
-            routePoints.Add(new RoutePoint() { RowIndex = 8, ColumnIndex = 4 });
-            routePoints.Add(new RoutePoint() { RowIndex = 8, ColumnIndex = 13 });
-            routePoints.Add(new RoutePoint() { RowIndex = 8, ColumnIndex = 16 });
-            routePoints.Add(new RoutePoint() { RowIndex = 8, ColumnIndex = 18 });
+            cellsCoins.Add(new CellPosition() { RowIndex = 8, ColumnIndex = 2 });
+            cellsCoins.Add(new CellPosition() { RowIndex = 8, ColumnIndex = 4 });
+            cellsCoins.Add(new CellPosition() { RowIndex = 8, ColumnIndex = 13 });
+            cellsCoins.Add(new CellPosition() { RowIndex = 8, ColumnIndex = 16 });
+            cellsCoins.Add(new CellPosition() { RowIndex = 8, ColumnIndex = 18 });
 
-            routePoints.Add(new RoutePoint() { RowIndex = 9, ColumnIndex = 5 });
-            routePoints.Add(new RoutePoint() { RowIndex = 9, ColumnIndex = 8 });
-            routePoints.Add(new RoutePoint() { RowIndex = 9, ColumnIndex = 11 });
-            routePoints.Add(new RoutePoint() { RowIndex = 9, ColumnIndex = 13 });
-            routePoints.Add(new RoutePoint() { RowIndex = 9, ColumnIndex = 17 });
+            cellsCoins.Add(new CellPosition() { RowIndex = 9, ColumnIndex = 5 });
+            cellsCoins.Add(new CellPosition() { RowIndex = 9, ColumnIndex = 8 });
+            cellsCoins.Add(new CellPosition() { RowIndex = 9, ColumnIndex = 11 });
+            cellsCoins.Add(new CellPosition() { RowIndex = 9, ColumnIndex = 13 });
+            cellsCoins.Add(new CellPosition() { RowIndex = 9, ColumnIndex = 17 });
 
-            routePoints.Add(new RoutePoint() { RowIndex = 10, ColumnIndex = 2 });
-            routePoints.Add(new RoutePoint() { RowIndex = 10, ColumnIndex = 4 });
-            routePoints.Add(new RoutePoint() { RowIndex = 10, ColumnIndex = 12 });
-            routePoints.Add(new RoutePoint() { RowIndex = 10, ColumnIndex = 15 });
-            routePoints.Add(new RoutePoint() { RowIndex = 10, ColumnIndex = 17 });
+            cellsCoins.Add(new CellPosition() { RowIndex = 10, ColumnIndex = 2 });
+            cellsCoins.Add(new CellPosition() { RowIndex = 10, ColumnIndex = 4 });
+            cellsCoins.Add(new CellPosition() { RowIndex = 10, ColumnIndex = 12 });
+            cellsCoins.Add(new CellPosition() { RowIndex = 10, ColumnIndex = 15 });
+            cellsCoins.Add(new CellPosition() { RowIndex = 10, ColumnIndex = 17 });
 
-            routePoints.Add(new RoutePoint() { RowIndex = 11, ColumnIndex = 2 });
-            routePoints.Add(new RoutePoint() { RowIndex = 11, ColumnIndex = 8 });
-            routePoints.Add(new RoutePoint() { RowIndex = 11, ColumnIndex = 10 });
-            routePoints.Add(new RoutePoint() { RowIndex = 11, ColumnIndex = 17 });
+            cellsCoins.Add(new CellPosition() { RowIndex = 11, ColumnIndex = 2 });
+            cellsCoins.Add(new CellPosition() { RowIndex = 11, ColumnIndex = 8 });
+            cellsCoins.Add(new CellPosition() { RowIndex = 11, ColumnIndex = 10 });
+            cellsCoins.Add(new CellPosition() { RowIndex = 11, ColumnIndex = 17 });
 
-            routePoints.Add(new RoutePoint() { RowIndex = 12, ColumnIndex = 1 });
-            routePoints.Add(new RoutePoint() { RowIndex = 12, ColumnIndex = 8 });
-            routePoints.Add(new RoutePoint() { RowIndex = 12, ColumnIndex = 10 });
-            routePoints.Add(new RoutePoint() { RowIndex = 12, ColumnIndex = 12 });
-            routePoints.Add(new RoutePoint() { RowIndex = 12, ColumnIndex = 15 });
-            routePoints.Add(new RoutePoint() { RowIndex = 12, ColumnIndex = 18 });
+            cellsCoins.Add(new CellPosition() { RowIndex = 12, ColumnIndex = 1 });
+            cellsCoins.Add(new CellPosition() { RowIndex = 12, ColumnIndex = 8 });
+            cellsCoins.Add(new CellPosition() { RowIndex = 12, ColumnIndex = 10 });
+            cellsCoins.Add(new CellPosition() { RowIndex = 12, ColumnIndex = 12 });
+            cellsCoins.Add(new CellPosition() { RowIndex = 12, ColumnIndex = 15 });
+            cellsCoins.Add(new CellPosition() { RowIndex = 12, ColumnIndex = 18 });
 
-            routePoints.Add(new RoutePoint() { RowIndex = 13, ColumnIndex = 1 });
-            routePoints.Add(new RoutePoint() { RowIndex = 13, ColumnIndex = 5 });
-            routePoints.Add(new RoutePoint() { RowIndex = 13, ColumnIndex = 8 });
+            cellsCoins.Add(new CellPosition() { RowIndex = 13, ColumnIndex = 1 });
+            cellsCoins.Add(new CellPosition() { RowIndex = 13, ColumnIndex = 5 });
+            cellsCoins.Add(new CellPosition() { RowIndex = 13, ColumnIndex = 8 });
 
-            routePoints.Add(new RoutePoint() { RowIndex = 14, ColumnIndex = 1 });
-            routePoints.Add(new RoutePoint() { RowIndex = 14, ColumnIndex = 5 });
-            routePoints.Add(new RoutePoint() { RowIndex = 14, ColumnIndex = 8 });
-            routePoints.Add(new RoutePoint() { RowIndex = 14, ColumnIndex = 11 });
-            routePoints.Add(new RoutePoint() { RowIndex = 14, ColumnIndex = 15 });
-            routePoints.Add(new RoutePoint() { RowIndex = 14, ColumnIndex = 18 });
+            cellsCoins.Add(new CellPosition() { RowIndex = 14, ColumnIndex = 1 });
+            cellsCoins.Add(new CellPosition() { RowIndex = 14, ColumnIndex = 5 });
+            cellsCoins.Add(new CellPosition() { RowIndex = 14, ColumnIndex = 8 });
+            cellsCoins.Add(new CellPosition() { RowIndex = 14, ColumnIndex = 11 });
+            cellsCoins.Add(new CellPosition() { RowIndex = 14, ColumnIndex = 15 });
+            cellsCoins.Add(new CellPosition() { RowIndex = 14, ColumnIndex = 18 });
 
-            routePoints.Add(new RoutePoint() { RowIndex = 15, ColumnIndex = 1 });
-            routePoints.Add(new RoutePoint() { RowIndex = 15, ColumnIndex = 4 });
-            routePoints.Add(new RoutePoint() { RowIndex = 15, ColumnIndex = 8 });
-            routePoints.Add(new RoutePoint() { RowIndex = 15, ColumnIndex = 13 });
-            routePoints.Add(new RoutePoint() { RowIndex = 15, ColumnIndex = 15 });
-            routePoints.Add(new RoutePoint() { RowIndex = 15, ColumnIndex = 17 });
+            cellsCoins.Add(new CellPosition() { RowIndex = 15, ColumnIndex = 1 });
+            cellsCoins.Add(new CellPosition() { RowIndex = 15, ColumnIndex = 4 });
+            cellsCoins.Add(new CellPosition() { RowIndex = 15, ColumnIndex = 8 });
+            cellsCoins.Add(new CellPosition() { RowIndex = 15, ColumnIndex = 13 });
+            cellsCoins.Add(new CellPosition() { RowIndex = 15, ColumnIndex = 15 });
+            cellsCoins.Add(new CellPosition() { RowIndex = 15, ColumnIndex = 17 });
 
-            routePoints.Add(new RoutePoint() { RowIndex = 16, ColumnIndex = 2 });
-            routePoints.Add(new RoutePoint() { RowIndex = 16, ColumnIndex = 6 });
-            routePoints.Add(new RoutePoint() { RowIndex = 16, ColumnIndex = 10 });
-            routePoints.Add(new RoutePoint() { RowIndex = 16, ColumnIndex = 12 });
-            routePoints.Add(new RoutePoint() { RowIndex = 16, ColumnIndex = 14 });
+            cellsCoins.Add(new CellPosition() { RowIndex = 16, ColumnIndex = 2 });
+            cellsCoins.Add(new CellPosition() { RowIndex = 16, ColumnIndex = 6 });
+            cellsCoins.Add(new CellPosition() { RowIndex = 16, ColumnIndex = 10 });
+            cellsCoins.Add(new CellPosition() { RowIndex = 16, ColumnIndex = 12 });
+            cellsCoins.Add(new CellPosition() { RowIndex = 16, ColumnIndex = 14 });
 
-            routePoints.Add(new RoutePoint() { RowIndex = 17, ColumnIndex = 1 });
-            routePoints.Add(new RoutePoint() { RowIndex = 17, ColumnIndex = 5 });
-            routePoints.Add(new RoutePoint() { RowIndex = 17, ColumnIndex = 7 });
-            routePoints.Add(new RoutePoint() { RowIndex = 17, ColumnIndex = 12 });
-            routePoints.Add(new RoutePoint() { RowIndex = 17, ColumnIndex = 14 });
-            routePoints.Add(new RoutePoint() { RowIndex = 17, ColumnIndex = 18 });
+            cellsCoins.Add(new CellPosition() { RowIndex = 17, ColumnIndex = 1 });
+            cellsCoins.Add(new CellPosition() { RowIndex = 17, ColumnIndex = 5 });
+            cellsCoins.Add(new CellPosition() { RowIndex = 17, ColumnIndex = 7 });
+            cellsCoins.Add(new CellPosition() { RowIndex = 17, ColumnIndex = 12 });
+            cellsCoins.Add(new CellPosition() { RowIndex = 17, ColumnIndex = 14 });
+            cellsCoins.Add(new CellPosition() { RowIndex = 17, ColumnIndex = 18 });
 
-            routePoints.Add(new RoutePoint() { RowIndex = 18, ColumnIndex = 2 });
-            routePoints.Add(new RoutePoint() { RowIndex = 18, ColumnIndex = 4 });
-            routePoints.Add(new RoutePoint() { RowIndex = 18, ColumnIndex = 12 });
-            routePoints.Add(new RoutePoint() { RowIndex = 18, ColumnIndex = 14 });
-            routePoints.Add(new RoutePoint() { RowIndex = 18, ColumnIndex = 16 });
-            routePoints.Add(new RoutePoint() { RowIndex = 18, ColumnIndex = 18 });
+            cellsCoins.Add(new CellPosition() { RowIndex = 18, ColumnIndex = 2 });
+            cellsCoins.Add(new CellPosition() { RowIndex = 18, ColumnIndex = 4 });
+            cellsCoins.Add(new CellPosition() { RowIndex = 18, ColumnIndex = 12 });
+            cellsCoins.Add(new CellPosition() { RowIndex = 18, ColumnIndex = 14 });
+            cellsCoins.Add(new CellPosition() { RowIndex = 18, ColumnIndex = 16 });
+            cellsCoins.Add(new CellPosition() { RowIndex = 18, ColumnIndex = 18 });
 
-            routePoints.Add(new RoutePoint() { RowIndex = 19, ColumnIndex = 5 });
-            routePoints.Add(new RoutePoint() { RowIndex = 19, ColumnIndex = 18 });
+            cellsCoins.Add(new CellPosition() { RowIndex = 19, ColumnIndex = 5 });
+            cellsCoins.Add(new CellPosition() { RowIndex = 19, ColumnIndex = 18 });
 
-            foreach (var routePoint in routePoints)
+            foreach (var cellCoin in cellsCoins)
             {
-                Points[routePoint.RowIndex, routePoint.ColumnIndex].ColorBackground = ConsoleColor.Black;
-                Points[routePoint.RowIndex, routePoint.ColumnIndex].ColorForeground = ConsoleColor.Cyan;
-                (Points[routePoint.RowIndex, routePoint.ColumnIndex] as Point).FieldType = FieldTypes.Coin;
-                Points[routePoint.RowIndex, routePoint.ColumnIndex].IsActive = true;
-                Points[routePoint.RowIndex, routePoint.ColumnIndex].Symbol = 'o';
+                Cells[cellCoin.RowIndex, cellCoin.ColumnIndex].ColorBackground = ConsoleColor.Black;
+                Cells[cellCoin.RowIndex, cellCoin.ColumnIndex].ColorForeground = ConsoleColor.Cyan;
+                (Cells[cellCoin.RowIndex, cellCoin.ColumnIndex] as Cell).FieldType = FieldTypes.Coin;
+                Cells[cellCoin.RowIndex, cellCoin.ColumnIndex].IsActive = true;
+                Cells[cellCoin.RowIndex, cellCoin.ColumnIndex].Symbol = 'o';
             }
         }
 
         private void BuildTraps()
         {
-            var routePoints = new List<RoutePoint>();
+            var cellsTraps = new List<CellPosition>();
 
-            routePoints.Add(new RoutePoint() { RowIndex = 2, ColumnIndex = 18 });
-            routePoints.Add(new RoutePoint() { RowIndex = 3, ColumnIndex = 6 });
-            routePoints.Add(new RoutePoint() { RowIndex = 7, ColumnIndex = 6 });
-            routePoints.Add(new RoutePoint() { RowIndex = 8, ColumnIndex = 9 });
-            routePoints.Add(new RoutePoint() { RowIndex = 10, ColumnIndex = 1 });
-            routePoints.Add(new RoutePoint() { RowIndex = 10, ColumnIndex = 8 });
-            routePoints.Add(new RoutePoint() { RowIndex = 12, ColumnIndex = 4 });
-            routePoints.Add(new RoutePoint() { RowIndex = 13, ColumnIndex = 15 });
-            routePoints.Add(new RoutePoint() { RowIndex = 17, ColumnIndex = 4 });
-            routePoints.Add(new RoutePoint() { RowIndex = 18, ColumnIndex = 9 });
+            cellsTraps.Add(new CellPosition() { RowIndex = 2, ColumnIndex = 18 });
+            cellsTraps.Add(new CellPosition() { RowIndex = 3, ColumnIndex = 6 });
+            //cellsTraps.Add(new CellPosition() { RowIndex = 7, ColumnIndex = 6 });
+            cellsTraps.Add(new CellPosition() { RowIndex = 8, ColumnIndex = 9 });
+            cellsTraps.Add(new CellPosition() { RowIndex = 10, ColumnIndex = 1 });
+            //cellsTraps.Add(new CellPosition() { RowIndex = 10, ColumnIndex = 8 });
+            cellsTraps.Add(new CellPosition() { RowIndex = 12, ColumnIndex = 4 });
+            cellsTraps.Add(new CellPosition() { RowIndex = 13, ColumnIndex = 15 });
+            //cellsTraps.Add(new CellPosition() { RowIndex = 17, ColumnIndex = 4 });
+            cellsTraps.Add(new CellPosition() { RowIndex = 18, ColumnIndex = 9 });
 
-            foreach (var routePoint in routePoints)
+            foreach (var cellTrap in cellsTraps)
             {
-                Points[routePoint.RowIndex, routePoint.ColumnIndex].ColorBackground = ConsoleColor.Black;
-                Points[routePoint.RowIndex, routePoint.ColumnIndex].ColorForeground = ConsoleColor.Red;
-                (Points[routePoint.RowIndex, routePoint.ColumnIndex] as Point).FieldType = FieldTypes.Trap;
-                Points[routePoint.RowIndex, routePoint.ColumnIndex].IsActive = true;
-                Points[routePoint.RowIndex, routePoint.ColumnIndex].Symbol = 'x';
+                Cells[cellTrap.RowIndex, cellTrap.ColumnIndex].ColorBackground = ConsoleColor.Black;
+                Cells[cellTrap.RowIndex, cellTrap.ColumnIndex].ColorForeground = ConsoleColor.Red;
+                (Cells[cellTrap.RowIndex, cellTrap.ColumnIndex] as Cell).FieldType = FieldTypes.Trap;
+                Cells[cellTrap.RowIndex, cellTrap.ColumnIndex].IsActive = true;
+                Cells[cellTrap.RowIndex, cellTrap.ColumnIndex].Symbol = 'x';
             }
 
         }
 
-        private struct RoutePoint
+        private void BuildDeadlyTraps()
+        {
+            var cellsTraps = new List<CellPosition>();
+
+            //routePoints.Add(new CellPosition() { RowIndex = 2, ColumnIndex = 18 });
+            //routePoints.Add(new CellPosition() { RowIndex = 3, ColumnIndex = 6 });
+            cellsTraps.Add(new CellPosition() { RowIndex = 7, ColumnIndex = 6 });
+            //routePoints.Add(new CellPosition() { RowIndex = 8, ColumnIndex = 9 });
+            //routePoints.Add(new CellPosition() { RowIndex = 10, ColumnIndex = 1 });
+            cellsTraps.Add(new CellPosition() { RowIndex = 10, ColumnIndex = 8 });
+            //routePoints.Add(new CellPosition() { RowIndex = 12, ColumnIndex = 4 });
+            //routePoints.Add(new CellPosition() { RowIndex = 13, ColumnIndex = 15 });
+            cellsTraps.Add(new CellPosition() { RowIndex = 17, ColumnIndex = 4 });
+            //routePoints.Add(new CellPosition() { RowIndex = 18, ColumnIndex = 9 });
+
+            foreach (var cellTrap in cellsTraps)
+            {
+                Cells[cellTrap.RowIndex, cellTrap.ColumnIndex].ColorBackground = ConsoleColor.Black;
+                Cells[cellTrap.RowIndex, cellTrap.ColumnIndex].ColorForeground = ConsoleColor.Red;
+                (Cells[cellTrap.RowIndex, cellTrap.ColumnIndex] as Cell).FieldType = FieldTypes.DeadlyTrap;
+                Cells[cellTrap.RowIndex, cellTrap.ColumnIndex].IsActive = true;
+                Cells[cellTrap.RowIndex, cellTrap.ColumnIndex].Symbol = 'x';
+            }
+
+        }
+
+        private struct CellPosition
         {
             public int RowIndex { get; set; }
             public int ColumnIndex { get; set; }
         }
 
-        private void ConvertPointsToArrayToArrays()
+        private void ConvertCellsToArrayToArrays()
         {
-            pointsToSave = new GameObject[Configuration.ROW_NUMBER][];
+            cellsToSave = new GameObject[Configuration.ROW_NUMBER][];
             for (int i = 0; i < Configuration.ROW_NUMBER; i++)
             {
-                pointsToSave[i] = new GameObject[Configuration.COLUMN_NUMBER];
+                cellsToSave[i] = new GameObject[Configuration.COLUMN_NUMBER];
                 for (int j = 0; j < Configuration.COLUMN_NUMBER; j++)
                 {
-                    pointsToSave[i][j] = Points[i, j];
+                    cellsToSave[i][j] = Cells[i, j];
                 }
             }
         }
 
-        private void ConvertPointsToMultidimensionalArray()
+        private void ConvertCellsToMultidimensionalArray()
         {
-            Points = new GameObject[Configuration.ROW_NUMBER, Configuration.COLUMN_NUMBER];
+            Cells = new GameObject[Configuration.ROW_NUMBER, Configuration.COLUMN_NUMBER];
 
             for (int i = 0; i < Configuration.ROW_NUMBER; i++)
             {
                 for (int j = 0; j < Configuration.COLUMN_NUMBER; j++)
                 {
-                    Points[i,j] = pointsToSave[i][j];
+                    Cells[i,j] = cellsToSave[i][j];
                 }
             }
         }
 
         public void Save()
         {
-            ConvertPointsToArrayToArrays();
+            ConvertCellsToArrayToArrays();
             var serializer = new DataContractJsonSerializer(typeof(GameField));
-            var path = $"{Path.GetFullPath(AppDomain.CurrentDomain.BaseDirectory)}Points.json";
+            var path = $"{Path.GetFullPath(AppDomain.CurrentDomain.BaseDirectory)}Cells.json";
             if (File.Exists(path))
             {
                 File.Delete(path);
@@ -442,7 +469,7 @@ namespace TheMaze.Models
         {
             var result = true;
             var serializer = new DataContractJsonSerializer(typeof(GameField));
-            var path = $"{Path.GetFullPath(AppDomain.CurrentDomain.BaseDirectory)}Points.json";
+            var path = $"{Path.GetFullPath(AppDomain.CurrentDomain.BaseDirectory)}Cells.json";
 
             if (!File.Exists(path))
             {
@@ -457,11 +484,11 @@ namespace TheMaze.Models
                     if (pointsObject != null)
                     {
                         var pointsBuilder = (GameField) pointsObject;
-                        pointsToSave = pointsBuilder.pointsToSave;
+                        cellsToSave = pointsBuilder.cellsToSave;
 
-                        if (pointsToSave != null && pointsToSave.Any())
+                        if (cellsToSave != null && cellsToSave.Any())
                         {
-                            ConvertPointsToMultidimensionalArray();
+                            ConvertCellsToMultidimensionalArray();
                         }
                     }
                 }

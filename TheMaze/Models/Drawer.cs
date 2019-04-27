@@ -5,17 +5,17 @@ namespace TheMaze.Models
 {
     public class Drawer
     {
-        private GameObject[,] _points;
+        private GameObject[,] _cells;
         private GameObject _player;
 
-        public Drawer(GameObject[,] points)
+        public Drawer(GameObject[,] cells)
         {
-            _points = points; 
+            cells = cells; 
         }
 
-        public void SetPoints(GameObject[,] points)
+        public void SetPoints(GameObject[,] cells)
         {
-            _points = points;
+            _cells = cells;
         }
 
         public void SetPlayer(GameObject player)
@@ -25,15 +25,15 @@ namespace TheMaze.Models
 
         public void Draw()
         {
-            for (var i = 0; i < _points.GetLength(0); i++)
+            for (var i = 0; i < _cells.GetLength(0); i++)
             {
-                for (int j = 0; j < _points.GetLength(1); j++)
+                for (int j = 0; j < _cells.GetLength(1); j++)
                 {
-                    Console.ForegroundColor = _points[i, j].ColorForeground;
-                    Console.BackgroundColor = _points[i, j].ColorBackground;
-                    if (_points[i, j].IsActive)
+                    Console.ForegroundColor = _cells[i, j].ColorForeground;
+                    Console.BackgroundColor = _cells[i, j].ColorBackground;
+                    if (_cells[i, j].IsActive)
                     {
-                        Console.Write(_points[i, j].Symbol);
+                        Console.Write(_cells[i, j].Symbol);
                     }
                     else
                     {

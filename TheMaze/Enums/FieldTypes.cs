@@ -8,6 +8,7 @@
         Route,
         Coin,
         Key,
-        Trap
+        Trap,
+        DeadlyTrap
     }
 }

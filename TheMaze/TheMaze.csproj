@@ -49,7 +49,7 @@
     <Compile Include="Enums\MenuItemType.cs" />
     <Compile Include="Enums\TypeFinishGame.cs" />
     <Compile Include="Interfaces\IGameSerialization.cs" />
-    <Compile Include="Models\GameObjects\Point.cs" />
+    <Compile Include="Models\GameObjects\Cell.cs" />
     <Compile Include="Models\GameObjects\GameObject.cs" />
     <Compile Include="TextHelpers\GameInfo.cs" />
     <Compile Include="Enums\FieldTypes.cs" />

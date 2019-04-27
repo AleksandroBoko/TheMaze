@@ -5,7 +5,7 @@ namespace TheMaze.Models.GameObjects
 {
     [KnownType(typeof(GameObject))]
     [DataContract]
-    public class Point : GameObject
+    public class Cell : GameObject
     {
         [DataMember]
         public FieldTypes FieldType { get; set; }

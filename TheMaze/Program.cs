@@ -31,7 +31,7 @@ namespace TheMaze
 
             PlayerInfo = new Player();
             GameField = new GameField();
-            Drawer = new Drawer(GameField.Points);
+            Drawer = new Drawer(GameField.Cells);
             GameInfo = new GameInfo();
             ConsoleHelper = new ConsoleHelper();
         }
@@ -64,7 +64,7 @@ namespace TheMaze
                         else
                         {
                             isNeedRepeatMenu = false;
-                            Drawer.SetPoints(GameField.Points);
+                            Drawer.SetPoints(GameField.Cells);
                             Drawer.SetPlayer(PlayerInfo);
                             Drawer.Draw();
                             ConsoleHelper.ShowPlayerLifePoints((PlayerInfo as Player).CountLifePoints, Player.MAX_LIFE_POINTS);
@@ -109,7 +109,7 @@ namespace TheMaze
                             Console.CursorLeft -= 1;
                             if (Console.CursorTop < Configuration.ROW_NUMBER - 1)
                             {
-                                nextPointType = (GameField[Console.CursorTop + 1, Console.CursorLeft] as Point).FieldType;
+                                nextPointType = (GameField[Console.CursorTop + 1, Console.CursorLeft] as Cell).FieldType;
                                 var canDoNextStep = NextStepHandler(nextPointType, Console.CursorTop + 1, Console.CursorLeft);
                                 if (canDoNextStep)
                                 {
@@ -131,7 +131,7 @@ namespace TheMaze
                             Console.CursorLeft -= 1;
                             if (Console.CursorTop > 0)
                             {
-                                nextPointType = (GameField[Console.CursorTop - 1, Console.CursorLeft] as Point).FieldType;
+                                nextPointType = (GameField[Console.CursorTop - 1, Console.CursorLeft] as Cell).FieldType;
                                 if (NextStepHandler(nextPointType, Console.CursorTop - 1, Console.CursorLeft))
                                 {
                                     Console.CursorTop--;
@@ -151,7 +151,7 @@ namespace TheMaze
                             Console.CursorLeft -= 1;
                             if (Console.CursorLeft > 0)
                             {
-                                nextPointType = (GameField[Console.CursorTop, Console.CursorLeft - 1] as Point).FieldType;
+                                nextPointType = (GameField[Console.CursorTop, Console.CursorLeft - 1] as Cell).FieldType;
                                 if (NextStepHandler(nextPointType, Console.CursorTop, Console.CursorLeft - 1))
                                 {
                                     Console.CursorLeft--;
@@ -171,7 +171,7 @@ namespace TheMaze
                             Console.CursorLeft -= 1;
                             if (Console.CursorLeft < Configuration.COLUMN_NUMBER - 1)
                             {
-                                nextPointType = (GameField[Console.CursorTop, Console.CursorLeft + 1] as Point).FieldType;
+                                nextPointType = (GameField[Console.CursorTop, Console.CursorLeft + 1] as Cell).FieldType;
                                 if (NextStepHandler(nextPointType, Console.CursorTop, Console.CursorLeft + 1))
                                 {
                                     Console.CursorLeft++;
@@ -214,7 +214,8 @@ namespace TheMaze
                     TypeFinishGame = TypeFinishGame.Won;
                     isExit = true;
                 }
-                else if (isNextStepDone && nextPointType == FieldTypes.Trap && (PlayerInfo as Player).CountLifePoints == 0)
+                else if (isNextStepDone && (nextPointType == FieldTypes.Trap || nextPointType == FieldTypes.DeadlyTrap) 
+                                            && (PlayerInfo as Player).CountLifePoints == 0)
                 {
                     TypeFinishGame = TypeFinishGame.Lost;
                     isExit = true;
@@ -231,7 +232,7 @@ namespace TheMaze
         static bool NextStepHandler(FieldTypes fieldTypes, int nextRowPosition, int nextColumnPosition)
         {
             var result = true;
-            var points = GameField.Points;
+            var points = GameField.Cells;
             switch (fieldTypes)
             {
                 case FieldTypes.Wall:
@@ -246,6 +247,7 @@ namespace TheMaze
                         (PlayerInfo as Player).IncreaseCoins();
                         points[nextRowPosition, nextColumnPosition].IsActive = false;
                     }
+
                     break;
                 case FieldTypes.Key:
                     if (points[nextRowPosition, nextColumnPosition].IsActive)
@@ -262,9 +264,27 @@ namespace TheMaze
                         points[nextRowPosition, nextColumnPosition].IsActive = false;
                         var currentRow = Console.CursorTop;
                         var currentColumn = Console.CursorLeft;
-                        ConsoleHelper.ShowPlayerLifePoints((PlayerInfo as Player).CountLifePoints, Player.MAX_LIFE_POINTS);
+                        ConsoleHelper.ShowPlayerLifePoints((PlayerInfo as Player).CountLifePoints,
+                            Player.MAX_LIFE_POINTS);
                         Console.SetCursorPosition(currentColumn, currentRow);
                     }
+
+                    break;
+                case FieldTypes.DeadlyTrap:
+                    if (points[nextRowPosition, nextColumnPosition].IsActive)
+                    {
+                        for (int i = 0; i < Player.MAX_LIFE_POINTS; i++)
+                        {
+                            (PlayerInfo as Player).DecreaseLifePoints();
+                        }
+                        points[nextRowPosition, nextColumnPosition].IsActive = false;
+                        var currentRow = Console.CursorTop;
+                        var currentColumn = Console.CursorLeft;
+                        ConsoleHelper.ShowPlayerLifePoints((PlayerInfo as Player).CountLifePoints,
+                            Player.MAX_LIFE_POINTS);
+                        Console.SetCursorPosition(currentColumn, currentRow);
+                    }
+
                     break;
             }
 
