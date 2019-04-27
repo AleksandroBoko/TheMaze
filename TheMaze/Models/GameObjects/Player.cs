@@ -32,6 +32,9 @@ namespace TheMaze.Models.GameObjects
             CountCoins = 0;
             PositionTop = 0;
             PositionLeft = 0;
+            ColorForeground = ConsoleColor.White;
+            ColorBackground = ConsoleColor.Blue;
+            Symbol = '0';
         }
 
         public void IncreaseLifePoints()

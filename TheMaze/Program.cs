@@ -10,7 +10,6 @@ namespace TheMaze
     class Program
     {
         public static GameObject PlayerInfo { get; set; }
-        public static PointsChecker PointsChecker { get; set; }
         public static GameField GameField { get; set; }
         public static Drawer Drawer { get; set; }
         public static GameInfo GameInfo { get; set; } 
@@ -33,7 +32,6 @@ namespace TheMaze
             PlayerInfo = new Player();
             GameField = new GameField();
             Drawer = new Drawer(GameField.Points);
-            PointsChecker = new PointsChecker(GameField.Points);
             GameInfo = new GameInfo();
             ConsoleHelper = new ConsoleHelper();
         }
@@ -111,7 +109,7 @@ namespace TheMaze
                             Console.CursorLeft -= 1;
                             if (Console.CursorTop < Configuration.ROW_NUMBER - 1)
                             {
-                                nextPointType = PointsChecker.GetPointType(Console.CursorTop + 1, Console.CursorLeft);
+                                nextPointType = (GameField[Console.CursorTop + 1, Console.CursorLeft] as Point).FieldType;
                                 var canDoNextStep = NextStepHandler(nextPointType, Console.CursorTop + 1, Console.CursorLeft);
                                 if (canDoNextStep)
                                 {
@@ -133,7 +131,7 @@ namespace TheMaze
                             Console.CursorLeft -= 1;
                             if (Console.CursorTop > 0)
                             {
-                                nextPointType = PointsChecker.GetPointType(Console.CursorTop - 1, Console.CursorLeft);
+                                nextPointType = (GameField[Console.CursorTop - 1, Console.CursorLeft] as Point).FieldType;
                                 if (NextStepHandler(nextPointType, Console.CursorTop - 1, Console.CursorLeft))
                                 {
                                     Console.CursorTop--;
@@ -153,7 +151,7 @@ namespace TheMaze
                             Console.CursorLeft -= 1;
                             if (Console.CursorLeft > 0)
                             {
-                                nextPointType = PointsChecker.GetPointType(Console.CursorTop, Console.CursorLeft - 1);
+                                nextPointType = (GameField[Console.CursorTop, Console.CursorLeft - 1] as Point).FieldType;
                                 if (NextStepHandler(nextPointType, Console.CursorTop, Console.CursorLeft - 1))
                                 {
                                     Console.CursorLeft--;
@@ -173,7 +171,7 @@ namespace TheMaze
                             Console.CursorLeft -= 1;
                             if (Console.CursorLeft < Configuration.COLUMN_NUMBER - 1)
                             {
-                                nextPointType = PointsChecker.GetPointType(Console.CursorTop, Console.CursorLeft + 1);
+                                nextPointType = (GameField[Console.CursorTop, Console.CursorLeft + 1] as Point).FieldType;
                                 if (NextStepHandler(nextPointType, Console.CursorTop, Console.CursorLeft + 1))
                                 {
                                     Console.CursorLeft++;

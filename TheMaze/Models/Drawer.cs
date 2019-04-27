@@ -47,23 +47,26 @@ namespace TheMaze.Models
             Console.SetCursorPosition(_player.PositionLeft, _player.PositionTop);
             DrawPlayer();
             Console.SetCursorPosition(_player.PositionLeft, _player.PositionTop);
-
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.BackgroundColor = ConsoleColor.Black;
+            SetDefaultColors();
         }
 
         public void DrawPlayer()
         {
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.BackgroundColor = ConsoleColor.Blue;
-            Console.Write('0');
+            Console.ForegroundColor = _player.ColorForeground; 
+            Console.BackgroundColor = _player.ColorBackground; 
+            Console.Write(_player.Symbol);
         }
 
         public void DrawRoute()
         {
+            SetDefaultColors();
+            Console.Write(' ');
+        }
+
+        private void SetDefaultColors()
+        {
             Console.ForegroundColor = ConsoleColor.White;
             Console.BackgroundColor = ConsoleColor.Black;
-            Console.Write(' ');
         }
     }
 }
