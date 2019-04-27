@@ -1,38 +1,39 @@
 ﻿using System;
+using TheMaze.Models.GameObjects;
 
 namespace TheMaze.Models
 {
     public class Drawer
     {
-        private Point[,] points;
-        private Player player;
+        private GameObject[,] _points;
+        private GameObject _player;
 
-        public Drawer(Point[,] points)
+        public Drawer(GameObject[,] points)
         {
-            this.points = points; 
+            _points = points; 
         }
 
-        public void SetPoints(Point[,] points)
+        public void SetPoints(GameObject[,] points)
         {
-            this.points = points;
+            _points = points;
         }
 
-        public void SetPlayer(Player player)
+        public void SetPlayer(GameObject player)
         {
-            this.player = player;
+            _player = player;
         }
 
         public void Draw()
         {
-            for (var i = 0; i < points.GetLength(0); i++)
+            for (var i = 0; i < _points.GetLength(0); i++)
             {
-                for (int j = 0; j < points.GetLength(1); j++)
+                for (int j = 0; j < _points.GetLength(1); j++)
                 {
-                    Console.ForegroundColor = points[i, j].ColorForground;
-                    Console.BackgroundColor = points[i, j].ColorBackground;
-                    if (points[i, j].IsActive)
+                    Console.ForegroundColor = _points[i, j].ColorForeground;
+                    Console.BackgroundColor = _points[i, j].ColorBackground;
+                    if (_points[i, j].IsActive)
                     {
-                        Console.Write(points[i, j].Symbol);
+                        Console.Write(_points[i, j].Symbol);
                     }
                     else
                     {
@@ -43,9 +44,9 @@ namespace TheMaze.Models
                 Console.WriteLine();
             }
 
-            Console.SetCursorPosition(player.PositionLeft, player.PositionTop);
+            Console.SetCursorPosition(_player.PositionLeft, _player.PositionTop);
             DrawPlayer();
-            Console.SetCursorPosition(player.PositionLeft, player.PositionTop);
+            Console.SetCursorPosition(_player.PositionLeft, _player.PositionTop);
 
             Console.ForegroundColor = ConsoleColor.White;
             Console.BackgroundColor = ConsoleColor.Black;

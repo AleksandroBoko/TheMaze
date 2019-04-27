@@ -1,20 +1,21 @@
 ﻿using TheMaze.Enums;
+using TheMaze.Models.GameObjects;
 
 namespace TheMaze.Models
 {
     public class PointsChecker
     {
-        private Point[,] points { get; set; }
+        private GameObject[,] points { get; set; }
 
-        public PointsChecker(Point[,] points)
+        public PointsChecker(GameObject[,] points)
         {
             this.points = points;
         }
 
-        public PointTypes GetPointType(int row, int column)
+        public FieldTypes GetPointType(int row, int column)
         {
             var point = points[row, column];
-            return point.PointType;
+            return (point as Field).FieldType;
         }
 
     }

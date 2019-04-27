@@ -5,9 +5,12 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using TheMaze.Enums;
+using TheMaze.Models.GameObjects;
 
 namespace TheMaze.Models
 {
+    [KnownType(typeof(Field))]
+    [KnownType(typeof(GameObject))]
     [DataContract]
     public class PointsBuilder
     {
@@ -17,14 +20,14 @@ namespace TheMaze.Models
         [NonSerialized]
         private int columnNumber = Configuration.COLUMN_NUMBER;
 
-        public Point[,] Points { get; private set; }
+        public GameObject[,] Points { get; private set; }
 
         [DataMember]
-        private Point[][] pointsToSave { get; set; }
+        private GameObject[][] pointsToSave { get; set; }
 
         public PointsBuilder()
         {
-            Points = new Point[rowNumber, columnNumber];
+            Points = new GameObject[rowNumber, columnNumber];
             Build();
         }
 
@@ -45,11 +48,11 @@ namespace TheMaze.Models
             {
                 for (int j = 0; j < columnNumber; j++)
                 {
-                    Points[i, j] = new Point()
+                    Points[i, j] = new Field()
                     {
                         ColorBackground = ConsoleColor.Yellow,
-                        ColorForground = ConsoleColor.Black,
-                        PointType = PointTypes.Wall,
+                        ColorForeground = ConsoleColor.Black,
+                        FieldType = FieldTypes.Wall,
                         IsActive = true,
                         Symbol = 'I'
                     };
@@ -165,9 +168,9 @@ namespace TheMaze.Models
 
             foreach (var routePoint in routePoints)
             {
-                Points[routePoint.RowIndex, routePoint.ColumnIndex].ColorBackground = ConsoleColor.Black;
-                Points[routePoint.RowIndex, routePoint.ColumnIndex].ColorForground = ConsoleColor.White;
-                Points[routePoint.RowIndex, routePoint.ColumnIndex].PointType = PointTypes.Route;
+                (Points[routePoint.RowIndex, routePoint.ColumnIndex] as Field).ColorBackground = ConsoleColor.Black;
+                Points[routePoint.RowIndex, routePoint.ColumnIndex].ColorForeground = ConsoleColor.White;
+                (Points[routePoint.RowIndex, routePoint.ColumnIndex] as Field).FieldType = FieldTypes.Route;
                 Points[routePoint.RowIndex, routePoint.ColumnIndex].Symbol = ' ';
             }
         }
@@ -196,9 +199,9 @@ namespace TheMaze.Models
                         break;
                 }
 
-                Points[rowPosition, columnPosition].ColorBackground = ConsoleColor.DarkGray;
-                Points[rowPosition, columnPosition].ColorForground = ConsoleColor.Black;
-                Points[rowPosition, columnPosition].PointType = PointTypes.ClosedDoor;
+                (Points[rowPosition, columnPosition] as Field).ColorBackground = ConsoleColor.DarkGray;
+                (Points[rowPosition, columnPosition] as Field).ColorForeground = ConsoleColor.Black;
+                (Points[rowPosition, columnPosition] as Field).FieldType = FieldTypes.ClosedDoor;
                 Points[rowPosition, columnPosition].Symbol = '#';
 
                 addedClosedDoors++;
@@ -208,8 +211,8 @@ namespace TheMaze.Models
         private void BuildOpenedDoor()
         {
             Points [19, 17].ColorBackground = ConsoleColor.Green;
-            Points [19, 17].ColorForground = ConsoleColor.White;
-            Points [19, 17].PointType = PointTypes.OpenedDoor;
+            Points [19, 17].ColorForeground = ConsoleColor.White;
+            (Points [19, 17] as Field).FieldType = FieldTypes.OpenedDoor;
             Points [19, 17].Symbol = 'E';
         }
 
@@ -224,8 +227,8 @@ namespace TheMaze.Models
             foreach (var routePoint in routePoints)
             {
                 Points[routePoint.RowIndex, routePoint.ColumnIndex].ColorBackground = ConsoleColor.Black;
-                Points[routePoint.RowIndex, routePoint.ColumnIndex].ColorForground = ConsoleColor.Blue;
-                Points[routePoint.RowIndex, routePoint.ColumnIndex].PointType = PointTypes.Key;
+                Points[routePoint.RowIndex, routePoint.ColumnIndex].ColorForeground = ConsoleColor.Blue;
+                (Points[routePoint.RowIndex, routePoint.ColumnIndex] as Field).FieldType = FieldTypes.Key;
                 Points[routePoint.RowIndex, routePoint.ColumnIndex].IsActive = true;
                 Points[routePoint.RowIndex, routePoint.ColumnIndex].Symbol = 'k';
             }
@@ -347,8 +350,8 @@ namespace TheMaze.Models
             foreach (var routePoint in routePoints)
             {
                 Points[routePoint.RowIndex, routePoint.ColumnIndex].ColorBackground = ConsoleColor.Black;
-                Points[routePoint.RowIndex, routePoint.ColumnIndex].ColorForground = ConsoleColor.Cyan;
-                Points[routePoint.RowIndex, routePoint.ColumnIndex].PointType = PointTypes.Coin;
+                Points[routePoint.RowIndex, routePoint.ColumnIndex].ColorForeground = ConsoleColor.Cyan;
+                (Points[routePoint.RowIndex, routePoint.ColumnIndex] as Field).FieldType = FieldTypes.Coin;
                 Points[routePoint.RowIndex, routePoint.ColumnIndex].IsActive = true;
                 Points[routePoint.RowIndex, routePoint.ColumnIndex].Symbol = 'o';
             }
@@ -372,8 +375,8 @@ namespace TheMaze.Models
             foreach (var routePoint in routePoints)
             {
                 Points[routePoint.RowIndex, routePoint.ColumnIndex].ColorBackground = ConsoleColor.Black;
-                Points[routePoint.RowIndex, routePoint.ColumnIndex].ColorForground = ConsoleColor.Red;
-                Points[routePoint.RowIndex, routePoint.ColumnIndex].PointType = PointTypes.Trap;
+                Points[routePoint.RowIndex, routePoint.ColumnIndex].ColorForeground = ConsoleColor.Red;
+                (Points[routePoint.RowIndex, routePoint.ColumnIndex] as Field).FieldType = FieldTypes.Trap;
                 Points[routePoint.RowIndex, routePoint.ColumnIndex].IsActive = true;
                 Points[routePoint.RowIndex, routePoint.ColumnIndex].Symbol = 'x';
             }
@@ -388,10 +391,10 @@ namespace TheMaze.Models
 
         private void ConvertPointsToArrayToArrays()
         {
-            pointsToSave = new Point[Configuration.ROW_NUMBER][];
+            pointsToSave = new GameObject[Configuration.ROW_NUMBER][];
             for (int i = 0; i < Configuration.ROW_NUMBER; i++)
             {
-                pointsToSave[i] = new Point[Configuration.COLUMN_NUMBER];
+                pointsToSave[i] = new GameObject[Configuration.COLUMN_NUMBER];
                 for (int j = 0; j < Configuration.COLUMN_NUMBER; j++)
                 {
                     pointsToSave[i][j] = Points[i, j];
@@ -401,7 +404,7 @@ namespace TheMaze.Models
 
         private void ConvertPointsToMultidimensionalArray()
         {
-            Points = new Point[Configuration.ROW_NUMBER, Configuration.COLUMN_NUMBER];
+            Points = new GameObject[Configuration.ROW_NUMBER, Configuration.COLUMN_NUMBER];
 
             for (int i = 0; i < Configuration.ROW_NUMBER; i++)
             {

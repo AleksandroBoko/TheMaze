@@ -1,6 +1,6 @@
 ﻿namespace TheMaze.Enums
 {
-    public enum PointTypes
+    public enum FieldTypes
     {
         Wall,
         ClosedDoor,

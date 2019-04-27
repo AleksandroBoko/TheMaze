@@ -1,19 +1,22 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TheMaze.Enums;
+using System.Runtime.Serialization;
 
 namespace TheMaze.Models.GameObjects
 {
-    public abstract class GameElement
+    [DataContract]
+    public abstract class GameObject
     {
+        [DataMember]
         public ConsoleColor ColorForeground { get; set; }
+        [DataMember]
         public ConsoleColor ColorBackground { get; set; }
+        [DataMember]
         public bool IsActive { get; set; }
+        [DataMember]
         public char Symbol { get; set; }
+        [DataMember]
         public int PositionTop { get; set; }
+        [DataMember]
         public int PositionLeft { get; set; }
     }
 }
