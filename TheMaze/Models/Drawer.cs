@@ -10,7 +10,7 @@ namespace TheMaze.Models
 
         public Drawer(GameObject[,] cells)
         {
-            cells = cells; 
+            _cells = cells;
         }
 
         public void SetPoints(GameObject[,] cells)
@@ -29,10 +29,11 @@ namespace TheMaze.Models
             {
                 for (int j = 0; j < _cells.GetLength(1); j++)
                 {
-                    Console.ForegroundColor = _cells[i, j].ColorForeground;
-                    Console.BackgroundColor = _cells[i, j].ColorBackground;
+                    Console.ResetColor();
                     if (_cells[i, j].IsActive)
                     {
+                        Console.ForegroundColor = _cells[i, j].ColorForeground;
+                        Console.BackgroundColor = _cells[i, j].ColorBackground;
                         Console.Write(_cells[i, j].Symbol);
                     }
                     else
@@ -52,8 +53,8 @@ namespace TheMaze.Models
 
         public void DrawPlayer()
         {
-            Console.ForegroundColor = _player.ColorForeground; 
-            Console.BackgroundColor = _player.ColorBackground; 
+            Console.ForegroundColor = _player.ColorForeground;
+            Console.BackgroundColor = _player.ColorBackground;
             Console.Write(_player.Symbol);
         }
 

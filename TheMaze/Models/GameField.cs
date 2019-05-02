@@ -48,6 +48,8 @@ namespace TheMaze.Models
             BuildTraps();
             BuildDeadlyTraps();
             BuildKeys();
+            BuildPortals();
+            BuildPrizes();
         }
 
         private void BuildField()
@@ -91,12 +93,11 @@ namespace TheMaze.Models
             routeCells.Add(new CellPosition() { RowIndex = 2, ColumnIndex = 12 });
             routeCells.Add(new CellPosition() { RowIndex = 2, ColumnIndex = 13 });
             routeCells.Add(new CellPosition() { RowIndex = 2, ColumnIndex = 14 });
-            routeCells.Add(new CellPosition() { RowIndex = 2, ColumnIndex = 17 });
+            //routeCells.Add(new CellPosition() { RowIndex = 2, ColumnIndex = 17 });
 
             routeCells.Add(new CellPosition() { RowIndex = 3, ColumnIndex = 3 });
             routeCells.Add(new CellPosition() { RowIndex = 3, ColumnIndex = 7 });
             routeCells.Add(new CellPosition() { RowIndex = 3, ColumnIndex = 9 });
-            routeCells.Add(new CellPosition() { RowIndex = 3, ColumnIndex = 15 });
             routeCells.Add(new CellPosition() { RowIndex = 3, ColumnIndex = 16 });
             routeCells.Add(new CellPosition() { RowIndex = 3, ColumnIndex = 18 });
 
@@ -371,13 +372,10 @@ namespace TheMaze.Models
 
             cellsTraps.Add(new CellPosition() { RowIndex = 2, ColumnIndex = 18 });
             cellsTraps.Add(new CellPosition() { RowIndex = 3, ColumnIndex = 6 });
-            //cellsTraps.Add(new CellPosition() { RowIndex = 7, ColumnIndex = 6 });
             cellsTraps.Add(new CellPosition() { RowIndex = 8, ColumnIndex = 9 });
             cellsTraps.Add(new CellPosition() { RowIndex = 10, ColumnIndex = 1 });
-            //cellsTraps.Add(new CellPosition() { RowIndex = 10, ColumnIndex = 8 });
             cellsTraps.Add(new CellPosition() { RowIndex = 12, ColumnIndex = 4 });
             cellsTraps.Add(new CellPosition() { RowIndex = 13, ColumnIndex = 15 });
-            //cellsTraps.Add(new CellPosition() { RowIndex = 17, ColumnIndex = 4 });
             cellsTraps.Add(new CellPosition() { RowIndex = 18, ColumnIndex = 9 });
 
             foreach (var cellTrap in cellsTraps)
@@ -395,16 +393,9 @@ namespace TheMaze.Models
         {
             var cellsTraps = new List<CellPosition>();
 
-            //routePoints.Add(new CellPosition() { RowIndex = 2, ColumnIndex = 18 });
-            //routePoints.Add(new CellPosition() { RowIndex = 3, ColumnIndex = 6 });
             cellsTraps.Add(new CellPosition() { RowIndex = 7, ColumnIndex = 6 });
-            //routePoints.Add(new CellPosition() { RowIndex = 8, ColumnIndex = 9 });
-            //routePoints.Add(new CellPosition() { RowIndex = 10, ColumnIndex = 1 });
             cellsTraps.Add(new CellPosition() { RowIndex = 10, ColumnIndex = 8 });
-            //routePoints.Add(new CellPosition() { RowIndex = 12, ColumnIndex = 4 });
-            //routePoints.Add(new CellPosition() { RowIndex = 13, ColumnIndex = 15 });
             cellsTraps.Add(new CellPosition() { RowIndex = 17, ColumnIndex = 4 });
-            //routePoints.Add(new CellPosition() { RowIndex = 18, ColumnIndex = 9 });
 
             foreach (var cellTrap in cellsTraps)
             {
@@ -414,7 +405,42 @@ namespace TheMaze.Models
                 Cells[cellTrap.RowIndex, cellTrap.ColumnIndex].IsActive = true;
                 Cells[cellTrap.RowIndex, cellTrap.ColumnIndex].Symbol = 'x';
             }
+        }
 
+        private void BuildPortals()
+        {
+            var cellsPortals = new List<CellPosition>();
+
+            cellsPortals.Add(new CellPosition() { RowIndex = 3, ColumnIndex = 15 });
+            cellsPortals.Add(new CellPosition() { RowIndex = 8, ColumnIndex = 1 });
+            cellsPortals.Add(new CellPosition() { RowIndex = 10, ColumnIndex = 18 });
+
+
+            foreach (var cellPortal in cellsPortals)
+            {
+                Cells[cellPortal.RowIndex, cellPortal.ColumnIndex].ColorBackground = ConsoleColor.Blue;
+                Cells[cellPortal.RowIndex, cellPortal.ColumnIndex].ColorForeground = ConsoleColor.White;
+                (Cells[cellPortal.RowIndex, cellPortal.ColumnIndex] as Cell).FieldType = FieldTypes.Portal;
+                Cells[cellPortal.RowIndex, cellPortal.ColumnIndex].IsActive = true;
+                Cells[cellPortal.RowIndex, cellPortal.ColumnIndex].Symbol = 'P';
+            }
+        }
+
+        private void BuildPrizes()
+        {
+            var cellsPrizes = new List<CellPosition>();
+
+            cellsPrizes.Add(new CellPosition() { RowIndex = 2, ColumnIndex = 17 });
+
+
+            foreach (var cellPrize in cellsPrizes)
+            {
+                Cells[cellPrize.RowIndex, cellPrize.ColumnIndex].ColorBackground = ConsoleColor.Green;
+                Cells[cellPrize.RowIndex, cellPrize.ColumnIndex].ColorForeground = ConsoleColor.Black;
+                (Cells[cellPrize.RowIndex, cellPrize.ColumnIndex] as Cell).FieldType = FieldTypes.Prize;
+                Cells[cellPrize.RowIndex, cellPrize.ColumnIndex].IsActive = true;
+                Cells[cellPrize.RowIndex, cellPrize.ColumnIndex].Symbol = '*';
+            }
         }
 
         private struct CellPosition

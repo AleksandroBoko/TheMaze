@@ -11,6 +11,7 @@ namespace TheMaze.Models.GameObjects
     public class Player : GameObject, IGameSerialization
     {
         public const int MAX_LIFE_POINTS = 3;
+        public const int MAX_STEP_PER_TIME = 2;
 
         [DataMember]
         public int CountLifePoints { get; private set; } = MAX_LIFE_POINTS;
@@ -24,6 +25,8 @@ namespace TheMaze.Models.GameObjects
         public string PlayerName { get; set; }
         [DataMember]
         public DateTime StarTime { get; set; }
+        [DataMember]
+        public int StepsPerTime { get; set; }
 
         public Player()
         {
@@ -35,11 +38,12 @@ namespace TheMaze.Models.GameObjects
             ColorForeground = ConsoleColor.White;
             ColorBackground = ConsoleColor.Blue;
             Symbol = '0';
+            StepsPerTime = 1;
         }
 
-        public void IncreaseLifePoints()
+        public void IncreaseStepPerTime()
         {
-            CountLifePoints = CountLifePoints + 1 <= MAX_LIFE_POINTS ? ++CountLifePoints : CountLifePoints;
+            StepsPerTime = StepsPerTime + 1 <= MAX_STEP_PER_TIME ? ++StepsPerTime : StepsPerTime;
         }
 
         public void DecreaseLifePoints()

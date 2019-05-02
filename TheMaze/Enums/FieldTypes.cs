@@ -9,6 +9,8 @@
         Coin,
         Key,
         Trap,
-        DeadlyTrap
+        DeadlyTrap,
+        Portal,
+        Prize
     }
 }
