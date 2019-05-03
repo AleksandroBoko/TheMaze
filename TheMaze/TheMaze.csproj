@@ -48,6 +48,7 @@
     <Compile Include="ConsoleHelpers\ConsoleHelper.cs" />
     <Compile Include="Enums\MenuItemType.cs" />
     <Compile Include="Enums\TypeFinishGame.cs" />
+    <Compile Include="Models\Game.cs" />
     <Compile Include="Interfaces\IGameSerialization.cs" />
     <Compile Include="Models\GameObjects\Cell.cs" />
     <Compile Include="Models\GameObjects\GameObject.cs" />

@@ -3,7 +3,7 @@ using System.Text;
 
 namespace TheMaze.TextHelpers
 {
-    class GameInfo
+    public class GameInfo
     {
         private StringBuilder textInfo;
         public string PlayerName { private get; set; }
