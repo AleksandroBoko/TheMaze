@@ -112,12 +112,7 @@ namespace TheMaze.Models
                     {
                         case ConsoleKey.DownArrow:
                             {
-                                if (stepsDone == 0)
-                                {
-                                    Console.CursorLeft -= 1;
-                                }
-                                drawer.DrawRoute();
-                                Console.CursorLeft -= 1;
+                                DrawRoute(stepsDone);
                                 if (Console.CursorTop < Configuration.ROW_NUMBER - 1)
                                 {
                                     nextPointType = (gameField[Console.CursorTop + 1, Console.CursorLeft] as Cell)
@@ -132,20 +127,14 @@ namespace TheMaze.Models
                                     }
                                 }
 
-                                drawer.DrawPlayer();
-                                Console.CursorLeft -= 1;
+                                DrawPlayer();
                                 (playerInfo as Player).IncreaseSteps();
 
                                 break;
                             }
                         case ConsoleKey.UpArrow:
                             {
-                                if (stepsDone == 0)
-                                {
-                                    Console.CursorLeft -= 1;
-                                }
-                                drawer.DrawRoute();
-                                Console.CursorLeft -= 1;
+                                DrawRoute(stepsDone);
                                 if (Console.CursorTop > 0)
                                 {
                                     nextPointType = (gameField[Console.CursorTop - 1, Console.CursorLeft] as Cell)
@@ -158,19 +147,13 @@ namespace TheMaze.Models
                                     }
                                 }
 
-                                drawer.DrawPlayer();
-                                Console.CursorLeft -= 1;
+                                DrawPlayer();
                                 (playerInfo as Player).IncreaseSteps();
                                 break;
                             }
                         case ConsoleKey.LeftArrow:
                             {
-                                if (stepsDone == 0)
-                                {
-                                    Console.CursorLeft -= 1;
-                                }
-                                drawer.DrawRoute();
-                                Console.CursorLeft -= 1;
+                                DrawRoute(stepsDone);
                                 if (Console.CursorLeft > 0)
                                 {
                                     nextPointType = (gameField[Console.CursorTop, Console.CursorLeft - 1] as Cell)
@@ -183,19 +166,13 @@ namespace TheMaze.Models
                                     }
                                 }
 
-                                drawer.DrawPlayer();
-                                Console.CursorLeft -= 1;
+                                DrawPlayer();
                                 (playerInfo as Player).IncreaseSteps();
                                 break;
                             }
                         case ConsoleKey.RightArrow:
                             {
-                                if (stepsDone == 0)
-                                {
-                                    Console.CursorLeft -= 1;
-                                }
-                                drawer.DrawRoute();
-                                Console.CursorLeft -= 1;
+                                DrawRoute(stepsDone);
                                 if (Console.CursorLeft < Configuration.COLUMN_NUMBER - 1)
                                 {
                                     nextPointType = (gameField[Console.CursorTop, Console.CursorLeft + 1] as Cell)
@@ -209,8 +186,7 @@ namespace TheMaze.Models
 
                                 }
 
-                                drawer.DrawPlayer();
-                                Console.CursorLeft -= 1;
+                                DrawPlayer();
                                 (playerInfo as Player).IncreaseSteps();
                                 break;
                             }
@@ -223,12 +199,7 @@ namespace TheMaze.Models
                         case ConsoleKey.F2:
                             {
                                 SaveGame();
-                                if (stepsDone == 0)
-                                {
-                                    Console.CursorLeft -= 1;
-                                }
-                                drawer.DrawPlayer();
-                                Console.CursorLeft -= 1;
+                                DrawPlayer(stepsDone == 0);
                                 break;
                             }
                         case ConsoleKey.Enter:
@@ -239,9 +210,7 @@ namespace TheMaze.Models
                             }
                         default:
                             {
-                                Console.CursorLeft -= 1;
-                                drawer.DrawPlayer();
-                                Console.CursorLeft -= 1;
+                                DrawRoute(0);
                                 break;
                             }
                     }
@@ -288,6 +257,26 @@ namespace TheMaze.Models
                     stepsDone++;
                 }
             }
+        }
+
+        private void DrawPlayer(bool isNeedShift = false)
+        {
+            if (isNeedShift)
+            {
+                Console.CursorLeft -= 1;
+            }
+            drawer.DrawPlayer();
+            Console.CursorLeft -= 1;
+        }
+
+        private void DrawRoute(int stepsDone)
+        {
+            if (stepsDone == 0)
+            {
+                Console.CursorLeft -= 1;
+            }
+            drawer.DrawRoute();
+            Console.CursorLeft -= 1;
         }
 
         private void SaveGame()
