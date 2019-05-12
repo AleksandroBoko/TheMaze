@@ -11,6 +11,7 @@
         Trap,
         DeadlyTrap,
         Portal,
-        Prize
+        Prize,
+        Crystal
     }
 }
