@@ -27,12 +27,19 @@ namespace TheMaze.Models.GameObjects
         public DateTime StarTime { get; set; }
         [DataMember]
         public int StepsPerTime { get; set; }
+        [DataMember]
+        public int CountCrystals { get; set; }
+        [DataMember]
+        public int CountGamePoints { get; set; }
 
         public Player()
         {
             CountSteps = 0;
             CountKeys = 0;
             CountCoins = 0;
+            CountCrystals = 0;
+            CountGamePoints = 0;
+
             PositionTop = 0;
             PositionLeft = 0;
             ColorForeground = ConsoleColor.White;
@@ -56,14 +63,21 @@ namespace TheMaze.Models.GameObjects
             CountSteps++;
         }
 
+        public void IncreaseGamePoints(int value)
+        {
+            CountGamePoints += value;
+        }
+
         public void IncreaseKeys()
         {
             CountKeys++;
+            IncreaseGamePoints(Configuration.KEY_VALUE);
         }
 
         public void IncreaseCoins()
         {
             CountCoins++;
+            IncreaseGamePoints(Configuration.COIN_VALUE);
         }
 
         public void Save()
@@ -123,6 +137,12 @@ namespace TheMaze.Models.GameObjects
         {
             PositionTop = top;
             PositionLeft = left;
+        }
+
+        public void IncreaseCrystals()
+        {
+            CountCrystals++;
+            IncreaseGamePoints(Configuration.CRYSTAL_VALUE);
         }
     }
 }

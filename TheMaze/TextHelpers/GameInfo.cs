@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using TheMaze.Models.GameObjects;
 
 namespace TheMaze.TextHelpers
 {
@@ -13,7 +14,7 @@ namespace TheMaze.TextHelpers
             textInfo = new StringBuilder();
         }
 
-        public StringBuilder GetFinalResult(int coins, int lifePoints, int keys, int steps, int timeInSeconds)
+        public StringBuilder GetFinalResult(Player player, int timeInSeconds)
         {
             textInfo.Clear();
             textInfo.AppendLine(new String('*', 35));
@@ -26,10 +27,12 @@ namespace TheMaze.TextHelpers
             {
                 textInfo.AppendLine($"Player name: {PlayerName}");
             }
-            textInfo.AppendLine($"Coins: {coins}");
-            textInfo.AppendLine($"Life points: {lifePoints}");
-            textInfo.AppendLine($"Keys: {keys}");
-            textInfo.AppendLine($"Steps: {steps}");
+            textInfo.AppendLine($"Coins: {player.CountCoins}");
+            textInfo.AppendLine($"Crystals: {player.CountCrystals}");
+            textInfo.AppendLine($"Game points: {player.CountGamePoints}");
+            textInfo.AppendLine($"Life points: {player.CountLifePoints}");
+            textInfo.AppendLine($"Keys: {player.CountKeys}");
+            textInfo.AppendLine($"Steps: {player.CountSteps}");
             textInfo.AppendLine($"Time: {timeInSeconds} sec");
 
             return textInfo;
@@ -71,10 +74,11 @@ namespace TheMaze.TextHelpers
             textInfo.AppendLine(new String('*', 25));
             textInfo.AppendLine("*         MENU          *");
             textInfo.AppendLine("*  Play             - 0 *");
-            textInfo.AppendLine("*  Load saved game  - 1 *");
-            textInfo.AppendLine("*  Set player name  - 2 *");
-            textInfo.AppendLine("*  Instruction      - 3 *");
-            textInfo.AppendLine("*  Exit             - 4 *");
+            textInfo.AppendLine("*  Quick Play       - 1 *");
+            textInfo.AppendLine("*  Load saved game  - 2 *");
+            textInfo.AppendLine("*  Set player name  - 3 *");
+            textInfo.AppendLine("*  Instruction      - 4 *");
+            textInfo.AppendLine("*  Exit             - 5 *");
             textInfo.AppendLine(new String('*', 25));
 
             return textInfo;

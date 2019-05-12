@@ -47,7 +47,10 @@ namespace TheMaze.Models
                 switch (key)
                 {
                     case MenuItemType.Play:
+                    case MenuItemType.QuickPlay:
                         isNeedRepeatMenu = false;
+                        gameField.Build(key);
+                        drawer.SetPoints(gameField.Cells);
                         drawer.SetPlayer(playerInfo);
                         drawer.Draw();
                         consoleHelper.ShowPlayerLifePoints((playerInfo as Player).CountLifePoints, Player.MAX_LIFE_POINTS);
@@ -55,7 +58,7 @@ namespace TheMaze.Models
                         (playerInfo as Player).StarTime = DateTime.Now;
                         MovementHandler();
                         ShowGameInfo();
-                        break;
+                        break;                    
                     case MenuItemType.LoadGame:
                         if (!(playerInfo as Player).Load() | !gameField.Load())
                         {
@@ -228,6 +231,12 @@ namespace TheMaze.Models
                                 Console.CursorLeft -= 1;
                                 break;
                             }
+                        case ConsoleKey.Enter:
+                        {
+                                Console.CursorLeft = (playerInfo as Player).PositionLeft;
+                                Console.CursorTop = (playerInfo as Player).PositionTop;   
+                                break;
+                            }
                         default:
                             {
                                 Console.CursorLeft -= 1;
@@ -254,10 +263,11 @@ namespace TheMaze.Models
                                             && gameField[Console.CursorTop, Console.CursorLeft].IsActive)
                     {
                         gameField[Console.CursorTop, Console.CursorLeft].IsActive = false;
+                        (playerInfo as Player).IncreaseGamePoints(Configuration.PORTAL_VALUE);
                         var random = new Random();
                         while (true)
                         {
-                            var row = random.Next(0, Configuration.COLUMN_NUMBER - 1);
+                            var row = random.Next(0, Configuration.ROW_NUMBER - 1);
                             var column = random.Next(0, Configuration.COLUMN_NUMBER - 1);
                             if ((gameField[row, column] as Cell).FieldType == FieldTypes.Route)
                             {
@@ -293,7 +303,7 @@ namespace TheMaze.Models
             switch (fieldTypes)
             {
                 case FieldTypes.OpenedDoor:
-                    if ((playerInfo as Player).CountCoins < Configuration.POINTS_TO_EXIT
+                    if ((playerInfo as Player).CountGamePoints < Configuration.GAMEPOINTS_TO_EXIT
                         || (playerInfo as Player).CountSteps > Configuration.STEPS_TO_CLOSE_DOOR)
                     {
                         result = false;
@@ -357,8 +367,16 @@ namespace TheMaze.Models
                     {
                         points[nextRowPosition, nextColumnPosition].IsActive = false;
                         (playerInfo as Player).IncreaseStepPerTime();
+                        (playerInfo as Player).IncreaseGamePoints(Configuration.PRIZE_VALUE);
                     }
 
+                    break;
+                case FieldTypes.Crystal:
+                    if (points[nextRowPosition, nextColumnPosition].IsActive)
+                    {
+                        points[nextRowPosition, nextColumnPosition].IsActive = false;
+                        (playerInfo as Player).IncreaseCrystals();
+                    }
                     break;
             }
 
@@ -372,8 +390,7 @@ namespace TheMaze.Models
                 case TypeFinishGame.Won:
                     Console.Clear();
                     var time = (int)(DateTime.Now - (playerInfo as Player).StarTime).TotalSeconds;
-                    Console.WriteLine(gameInfo.GetFinalResult((playerInfo as Player).CountCoins,
-                        (playerInfo as Player).CountLifePoints, (playerInfo as Player).CountKeys, (playerInfo as Player).CountSteps, time));
+                    Console.WriteLine(gameInfo.GetFinalResult(playerInfo as Player, time));
                     break;
                 case TypeFinishGame.Lost:
                     Console.Clear();

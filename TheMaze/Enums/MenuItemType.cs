@@ -3,6 +3,7 @@
     public enum MenuItemType
     {
         Play,
+        QuickPlay,
         LoadGame,
         EditPlayer,
         Information,

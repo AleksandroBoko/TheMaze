@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace TheMaze.Models.GameObjects
 {
     [DataContract]
-    public abstract class GameObject
+    public class GameObject
     {
         [DataMember]
         public ConsoleColor ColorForeground { get; set; }
