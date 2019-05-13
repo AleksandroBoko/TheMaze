@@ -1,7 +1,7 @@
 ﻿using System.Runtime.Serialization;
-using TheMaze.Enums;
+using TheMaze.Core.Enums;
 
-namespace TheMaze.Models.GameObjects
+namespace TheMaze.Core.Models.GameObjects
 {
     [KnownType(typeof(GameObject))]
     [DataContract]

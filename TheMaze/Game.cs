@@ -1,8 +1,10 @@
 ﻿using System;
 using TheMaze.ConsoleHelpers;
-using TheMaze.Enums;
-using TheMaze.Models.GameObjects;
-using TheMaze.TextHelpers;
+using TheMaze.Core.Configurations;
+using TheMaze.Core.Enums;
+using TheMaze.Core.Models;
+using TheMaze.Core.Models.GameObjects;
+using TheMaze.Core.TextHelpers;
 
 namespace TheMaze.Models
 {

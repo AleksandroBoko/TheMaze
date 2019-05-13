@@ -1,4 +1,4 @@
-﻿namespace TheMaze.Models
+﻿namespace TheMaze.Core.Configurations
 {
     public static class Configuration
     {

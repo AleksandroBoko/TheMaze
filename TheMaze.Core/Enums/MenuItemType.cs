@@ -1,4 +1,4 @@
-﻿namespace TheMaze.Enums
+﻿namespace TheMaze.Core.Enums
 {
     public enum MenuItemType
     {

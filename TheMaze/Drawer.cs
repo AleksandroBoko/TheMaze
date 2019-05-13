@@ -1,5 +1,5 @@
 ﻿using System;
-using TheMaze.Models.GameObjects;
+using TheMaze.Core.Models.GameObjects;
 
 namespace TheMaze.Models
 {

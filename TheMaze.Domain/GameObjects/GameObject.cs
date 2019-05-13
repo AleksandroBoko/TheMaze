@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace TheMaze.Models.GameObjects
+namespace TheMaze.Domain.GameObjects
 {
     [DataContract]
     public class GameObject

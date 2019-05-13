@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Text;
-using TheMaze.Models.GameObjects;
+using TheMaze.Core.Models.GameObjects;
 
-namespace TheMaze.TextHelpers
+namespace TheMaze.Core.TextHelpers
 {
     public class GameInfo
     {

@@ -4,11 +4,12 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using Newtonsoft.Json.Linq;
-using TheMaze.Enums;
-using TheMaze.Interfaces;
-using TheMaze.Models.GameObjects;
+using TheMaze.Core.Configurations;
+using TheMaze.Core.Enums;
+using TheMaze.Core.Interfaces;
+using TheMaze.Core.Models.GameObjects;
 
-namespace TheMaze.Models
+namespace TheMaze.Core.Models
 {
     [KnownType(typeof(Cell))]
     [KnownType(typeof(GameObject))]

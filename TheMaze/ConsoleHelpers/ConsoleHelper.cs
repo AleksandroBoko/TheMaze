@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
-using TheMaze.Enums;
-using TheMaze.Models;
+using TheMaze.Core.Configurations;
+using TheMaze.Core.Enums;
 
 namespace TheMaze.ConsoleHelpers
 {

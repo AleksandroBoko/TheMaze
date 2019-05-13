@@ -1,4 +1,4 @@
-﻿namespace TheMaze.Interfaces
+﻿namespace TheMaze.Core.Interfaces
 {
     public interface IGameSerialization
     {

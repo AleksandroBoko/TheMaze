@@ -1,0 +1,22 @@
+﻿using System;
+using System.Runtime.Serialization;
+
+namespace TheMaze.Core.Models.GameObjects
+{
+    [DataContract]
+    public class GameObject
+    {
+        [DataMember]
+        public ConsoleColor ColorForeground { get; set; }
+        [DataMember]
+        public ConsoleColor ColorBackground { get; set; }
+        [DataMember]
+        public bool IsActive { get; set; }
+        [DataMember]
+        public char Symbol { get; set; }
+        [DataMember]
+        public int PositionTop { get; set; }
+        [DataMember]
+        public int PositionLeft { get; set; }
+    }
+}

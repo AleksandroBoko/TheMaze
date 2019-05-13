@@ -4,18 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{33AAB051-0312-4BF0-8761-59DD4329D7BD}</ProjectGuid>
-    <OutputType>Exe</OutputType>
-    <RootNamespace>TheMaze</RootNamespace>
-    <AssemblyName>TheMaze</AssemblyName>
+    <ProjectGuid>{A286A531-838A-410B-8A15-7B0157F73190}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TheMaze.Core</RootNamespace>
+    <AssemblyName>TheMaze.Core</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -25,7 +23,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -48,27 +45,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConsoleHelpers\ConsoleHelper.cs" />
+    <Compile Include="Configurations\Configuration.cs" />
+    <Compile Include="Enums\FieldTypes.cs" />
     <Compile Include="Enums\MenuItemType.cs" />
     <Compile Include="Enums\TypeFinishGame.cs" />
-    <Compile Include="Models\Game.cs" />
     <Compile Include="Interfaces\IGameSerialization.cs" />
+    <Compile Include="Models\GameField.cs" />
     <Compile Include="Models\GameObjects\Cell.cs" />
     <Compile Include="Models\GameObjects\GameObject.cs" />
-    <Compile Include="TextHelpers\GameInfo.cs" />
-    <Compile Include="Enums\FieldTypes.cs" />
-    <Compile Include="Models\Configuration.cs" />
     <Compile Include="Models\GameObjects\Player.cs" />
-    <Compile Include="Models\GameField.cs" />
-    <Compile Include="Models\Drawer.cs" />
-    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TextHelpers\GameInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
     <None Include="packages.config" />
     <None Include="Resources\GameField.json" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

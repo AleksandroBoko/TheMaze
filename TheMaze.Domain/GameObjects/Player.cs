@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using TheMaze.Interfaces;
 
-namespace TheMaze.Models.GameObjects
+namespace TheMaze.Domain.GameObjects
 {
     [KnownType(typeof(GameObject))]
     [DataContract]
