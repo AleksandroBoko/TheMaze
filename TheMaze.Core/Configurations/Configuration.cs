@@ -29,6 +29,6 @@
         public const int PORTAL_VALUE = 1;
         public const int PRIZE_VALUE = 1;
 
-        public const string STATIC_GAME_FIELD_PATH = "/Resources/GameField.json";
+        public const string STATIC_GAME_FIELD_PATH = "/TheMaze.Core/Resources/GameField.json";
     }
 }

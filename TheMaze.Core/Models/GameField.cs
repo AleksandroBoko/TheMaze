@@ -543,7 +543,7 @@ namespace TheMaze.Core.Models
         
         private void LoadStaticGameField()
         {
-            var projectDirectory = Directory.GetParent(Environment.CurrentDirectory).Parent.FullName;
+            var projectDirectory = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName;
             var path = $"{projectDirectory}{Configuration.STATIC_GAME_FIELD_PATH}";
 
             using (var stream = new StreamReader(Path.GetFullPath(path)))
