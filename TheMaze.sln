@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheMaze.Console", "TheMaze\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheMaze.Core", "TheMaze.Core\TheMaze.Core.csproj", "{A286A531-838A-410B-8A15-7B0157F73190}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheMaze.WinForms", "TheMaze.WinForms\TheMaze.WinForms.csproj", "{A415E494-8690-428E-B5FF-77C532FFDE8A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{A286A531-838A-410B-8A15-7B0157F73190}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A286A531-838A-410B-8A15-7B0157F73190}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A286A531-838A-410B-8A15-7B0157F73190}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A415E494-8690-428E-B5FF-77C532FFDE8A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A415E494-8690-428E-B5FF-77C532FFDE8A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A415E494-8690-428E-B5FF-77C532FFDE8A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A415E494-8690-428E-B5FF-77C532FFDE8A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
