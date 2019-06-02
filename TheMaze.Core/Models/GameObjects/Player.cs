@@ -3,6 +3,7 @@ using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using TheMaze.Core.Configurations;
+using TheMaze.Core.Enums;
 using TheMaze.Core.Interfaces;
 
 namespace TheMaze.Core.Models.GameObjects
@@ -43,8 +44,8 @@ namespace TheMaze.Core.Models.GameObjects
 
             PositionTop = 0;
             PositionLeft = 0;
-            ColorForeground = ConsoleColor.White;
-            ColorBackground = ConsoleColor.Blue;
+            ColorForeground = CellColor.PlayerForeground;
+            ColorBackground = CellColor.PlayerBackground;
             Symbol = '0';
             StepsPerTime = 1;
         }

@@ -71,8 +71,8 @@ namespace TheMaze.Core.Models
                 {
                     Cells[i, j] = new Cell()
                     {
-                        ColorBackground = ConsoleColor.Yellow,
-                        ColorForeground = ConsoleColor.Black,
+                        ColorBackground = CellColor.WallBackground,
+                        ColorForeground = CellColor.WallForeground,
                         FieldType = FieldTypes.Wall,
                         IsActive = true,
                         Symbol = 'I'
@@ -404,8 +404,8 @@ namespace TheMaze.Core.Models
         {
             var cell = new Cell
             {
-                ColorBackground = ConsoleColor.Black,
-                ColorForeground = ConsoleColor.White,
+                ColorBackground = CellColor.RouteBackground,
+                ColorForeground = CellColor.RouteForeground,
                 FieldType = FieldTypes.Route,
                 IsActive = true,
                 Symbol = ' '
@@ -418,8 +418,8 @@ namespace TheMaze.Core.Models
         {
             var cell = new Cell
             {
-                ColorBackground = ConsoleColor.Black,
-                ColorForeground = ConsoleColor.Cyan,
+                ColorBackground = CellColor.CoinBackground,
+                ColorForeground = CellColor.CoinForeground,
                 FieldType = FieldTypes.Coin,
                 IsActive = true,
                 Symbol = 'o'
@@ -432,8 +432,8 @@ namespace TheMaze.Core.Models
         {
             var cell = new Cell
             {
-                ColorBackground = ConsoleColor.DarkGray,
-                ColorForeground = ConsoleColor.Black,
+                ColorBackground = CellColor.ClosedDoorBackground,
+                ColorForeground = CellColor.ClosedDoorForeground,
                 FieldType = FieldTypes.ClosedDoor,
                 IsActive = true,
                 Symbol = '#'
@@ -446,8 +446,8 @@ namespace TheMaze.Core.Models
         {
             var cell = new Cell
             {
-                ColorBackground = ConsoleColor.Green,
-                ColorForeground = ConsoleColor.White,
+                ColorBackground = CellColor.OpenDoorBackground,
+                ColorForeground = CellColor.OpenDoorForeground,
                 FieldType = FieldTypes.OpenedDoor,
                 IsActive = true,
                 Symbol = 'E'
@@ -460,8 +460,8 @@ namespace TheMaze.Core.Models
         {
             var cell = new Cell
             {
-                ColorBackground = ConsoleColor.Black,
-                ColorForeground = ConsoleColor.Blue,
+                ColorBackground = CellColor.KeyBackground,
+                ColorForeground = CellColor.KeyForeground,
                 FieldType = FieldTypes.Key,
                 IsActive = true,
                 Symbol = 'k'
@@ -474,8 +474,8 @@ namespace TheMaze.Core.Models
         {
             var cell = new Cell()
             {
-                ColorBackground = ConsoleColor.Black,
-                ColorForeground = ConsoleColor.Red,
+                ColorBackground = CellColor.TrapBackground,
+                ColorForeground = CellColor.TrapForeground,
                 FieldType = FieldTypes.Trap,
                 IsActive = true,
                 Symbol = 'x'
@@ -488,8 +488,8 @@ namespace TheMaze.Core.Models
         {
             var cell = new Cell()
             {
-                ColorBackground = ConsoleColor.Black,
-                ColorForeground = ConsoleColor.Red,
+                ColorBackground = CellColor.DeadlyTrapBackground,
+                ColorForeground = CellColor.DeadlyTrapForeground,
                 FieldType = FieldTypes.DeadlyTrap,
                 IsActive = true,
                 Symbol = 'x'
@@ -502,8 +502,8 @@ namespace TheMaze.Core.Models
         {
             var cell = new Cell()
             {
-                ColorBackground = ConsoleColor.Blue,
-                ColorForeground = ConsoleColor.White,
+                ColorBackground = CellColor.PortalBackground,
+                ColorForeground = CellColor.PortalForeground,
                 FieldType = FieldTypes.Portal,
                 IsActive = true,
                 Symbol = 'P'
@@ -516,8 +516,8 @@ namespace TheMaze.Core.Models
         {
             var cell = new Cell()
             {
-                ColorBackground = ConsoleColor.Green,
-                ColorForeground = ConsoleColor.Black,
+                ColorBackground = CellColor.PrizeBackground,
+                ColorForeground = CellColor.PrizeForeground,
                 FieldType = FieldTypes.Prize,
                 IsActive = true,
                 Symbol = '*'
@@ -530,8 +530,8 @@ namespace TheMaze.Core.Models
         {
             var cell = new Cell()
             {
-                ColorBackground = ConsoleColor.Blue,
-                ColorForeground = ConsoleColor.White,
+                ColorBackground = CellColor.CrystalBackground,
+                ColorForeground = CellColor.CrystalForeground,
                 FieldType = FieldTypes.Crystal,
                 IsActive = true,
                 Symbol = '^'
@@ -592,49 +592,49 @@ namespace TheMaze.Core.Models
             switch (fieldType)
             {
                 case FieldTypes.Route:
-                    gameObject.ColorForeground = ConsoleColor.Black;
-                    gameObject.ColorBackground = ConsoleColor.Black;
+                    gameObject.ColorForeground = CellColor.RouteForeground;
+                    gameObject.ColorBackground = CellColor.RouteBackground;
                     gameObject.Symbol = ' ';
                     break;
                 case FieldTypes.Coin:
-                    gameObject.ColorForeground = ConsoleColor.Cyan;
-                    gameObject.ColorBackground = ConsoleColor.Black;
+                    gameObject.ColorForeground = CellColor.CoinForeground;
+                    gameObject.ColorBackground = CellColor.CoinBackground;
                     gameObject.Symbol = 'o';
                     break;
                 case FieldTypes.OpenedDoor:
-                    gameObject.ColorForeground = ConsoleColor.White;
-                    gameObject.ColorBackground = ConsoleColor.Green;
+                    gameObject.ColorForeground = CellColor.OpenDoorForeground;
+                    gameObject.ColorBackground = CellColor.OpenDoorBackground;
                     gameObject.Symbol = 'E';
                     break;
                 case FieldTypes.ClosedDoor:
-                    gameObject.ColorForeground = ConsoleColor.Black;
-                    gameObject.ColorBackground = ConsoleColor.DarkGray;
+                    gameObject.ColorForeground = CellColor.ClosedDoorForeground;
+                    gameObject.ColorBackground = CellColor.ClosedDoorBackground;
                     gameObject.Symbol = '#';
                     break;
                 case FieldTypes.Key:
-                    gameObject.ColorForeground = ConsoleColor.Blue;
-                    gameObject.ColorBackground = ConsoleColor.Black;
+                    gameObject.ColorForeground = CellColor.KeyForeground;
+                    gameObject.ColorBackground = CellColor.KeyBackground;
                     gameObject.Symbol = 'k';
                     break;
                 case FieldTypes.Trap:
                 case FieldTypes.DeadlyTrap:
-                    gameObject.ColorForeground = ConsoleColor.Red;
-                    gameObject.ColorBackground = ConsoleColor.Black;
+                    gameObject.ColorForeground = CellColor.DeadlyTrapForeground;
+                    gameObject.ColorBackground = CellColor.DeadlyTrapBackground;
                     gameObject.Symbol = 'x';
                     break;
                 case FieldTypes.Portal:
-                    gameObject.ColorForeground = ConsoleColor.White;
-                    gameObject.ColorBackground = ConsoleColor.Blue;
+                    gameObject.ColorForeground = CellColor.PortalForeground;
+                    gameObject.ColorBackground = CellColor.PortalBackground;
                     gameObject.Symbol = 'P';
                     break;
                 case FieldTypes.Prize:
-                    gameObject.ColorForeground = ConsoleColor.Black;
-                    gameObject.ColorBackground = ConsoleColor.Green;
+                    gameObject.ColorForeground = CellColor.PrizeForeground;
+                    gameObject.ColorBackground = CellColor.PrizeBackground;
                     gameObject.Symbol = '*';
                     break;
                 case FieldTypes.Crystal:
-                    gameObject.ColorForeground = ConsoleColor.White;
-                    gameObject.ColorBackground = ConsoleColor.Blue;
+                    gameObject.ColorForeground = CellColor.CrystalForeground;
+                    gameObject.ColorBackground = CellColor.CrystalBackground;
                     gameObject.Symbol = '^';
                     break;
             }

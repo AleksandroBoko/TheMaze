@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.Serialization;
+using TheMaze.Core.Enums;
 
 namespace TheMaze.Core.Models.GameObjects
 {
@@ -7,9 +8,9 @@ namespace TheMaze.Core.Models.GameObjects
     public class GameObject
     {
         [DataMember]
-        public ConsoleColor ColorForeground { get; set; }
+        public CellColor ColorForeground { get; set; }
         [DataMember]
-        public ConsoleColor ColorBackground { get; set; }
+        public CellColor ColorBackground { get; set; }
         [DataMember]
         public bool IsActive { get; set; }
         [DataMember]
