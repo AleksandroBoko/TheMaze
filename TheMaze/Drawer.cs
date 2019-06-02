@@ -1,5 +1,6 @@
 ﻿using System;
 using TheMaze.Core.Models.GameObjects;
+using TheMaze.Mappers;
 
 namespace TheMaze.Models
 {
@@ -32,8 +33,8 @@ namespace TheMaze.Models
                     Console.ResetColor();
                     if (_cells[i, j].IsActive)
                     {
-                        Console.ForegroundColor = _cells[i, j].ColorForeground;
-                        Console.BackgroundColor = _cells[i, j].ColorBackground;
+                        Console.ForegroundColor = ConsoleColorMapper.MapToConsoleColor(_cells[i, j].ColorForeground);
+                        Console.BackgroundColor = ConsoleColorMapper.MapToConsoleColor(_cells[i, j].ColorBackground);
                         Console.Write(_cells[i, j].Symbol);
                     }
                     else
@@ -53,8 +54,8 @@ namespace TheMaze.Models
 
         public void DrawPlayer()
         {
-            Console.ForegroundColor = _player.ColorForeground;
-            Console.BackgroundColor = _player.ColorBackground;
+            Console.ForegroundColor = ConsoleColorMapper.MapToConsoleColor(_player.ColorForeground);
+            Console.BackgroundColor = ConsoleColorMapper.MapToConsoleColor(_player.ColorBackground);
             Console.Write(_player.Symbol);
         }
 

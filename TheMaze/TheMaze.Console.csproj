@@ -51,6 +51,7 @@
     <Compile Include="ConsoleHelpers\ConsoleHelper.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="Drawer.cs" />
+    <Compile Include="Mappers\ConsoleColorMapper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
