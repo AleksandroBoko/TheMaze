@@ -32,5 +32,15 @@ namespace TheMaze.WinForms
                 winDrawer.Draw();
             }
         }
+
+        private void dgGame_KeyDown(object sender, KeyEventArgs e)
+        {
+            var key = e;
+            var send = sender;
+            if (key.KeyCode != Keys.Down)
+            {
+                key.SuppressKeyPress = true;
+            }
+        }
     }
 }

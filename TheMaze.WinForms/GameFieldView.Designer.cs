@@ -34,13 +34,14 @@
             // 
             // dgGame
             // 
-            this.dgGame.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgGame.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dgGame.ColumnHeadersVisible = false;
             this.dgGame.Location = new System.Drawing.Point(12, 12);
             this.dgGame.Name = "dgGame";
             this.dgGame.RowHeadersVisible = false;
-            this.dgGame.Size = new System.Drawing.Size(240, 150);
+            this.dgGame.Size = new System.Drawing.Size(304, 210);
             this.dgGame.TabIndex = 1;
+            this.dgGame.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dgGame_KeyDown);
             // 
             // GameFieldView
             // 

@@ -39,6 +39,7 @@ namespace TheMaze.WinForms
             var gameField = new GameField();
             gameField.Build(MenuItemType.QuickPlay);
             var drawer = new WinDrawer(gameField.Cells);
+            drawer.SetPlayer(_player);
             var gameView = new GameFieldView();
             gameView.SetDrawer(drawer);
             gameView.RunDrawer();

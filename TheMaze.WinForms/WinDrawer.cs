@@ -6,7 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using TheMaze.Core.Configurations;
+using TheMaze.Core.Enums;
 using TheMaze.Core.Models.GameObjects;
+using TheMaze.WinForms.Mappers;
 
 namespace TheMaze.WinForms
 {
@@ -44,41 +46,13 @@ namespace TheMaze.WinForms
             {
                 var col = new DataGridViewColumn();
                 col.CellTemplate = new DataGridViewTextBoxCell();
-                // col.Width == 100;
                 col.Width = 20;
-                var columnIndex = _dataGameGrid.Columns.Add(col);
-
-                //if (i < _cells.GetLength(0) - 1)
-                //{
-                //    _dataGameGrid.Rows.Add();
-                //}
+                _dataGameGrid.Columns.Add(col);
 
                 for (int j = 0; j < _cells.GetLength(1) - 1 && i == 0; j++)
                 {
                     _dataGameGrid.Rows.Add();
-
-
-
-                    //Console.ResetColor();
-                    //if (_cells[i, j].IsActive)
-                    //{
-                    //    Console.ForegroundColor = _cells[i, j].ColorForeground;
-                    //    Console.BackgroundColor = _cells[i, j].ColorBackground;
-                    //    Console.Write(_cells[i, j].Symbol);
-                    //}
-                    //else
-                    //{
-                    //    Console.Write(' ');
-                    //}
                 }
-                
-                //_dataGameGrid.Rows[0].Cells[0].Value = "H";
-
-                //break;
-
-                //Console.WriteLine();
-
-
             }
 
             for (var i = 0; i < _cells.GetLength(0); i++)
@@ -87,24 +61,22 @@ namespace TheMaze.WinForms
                 {
                     if (_cells[i, j].IsActive)
                     {
-                        //_dataGameGrid.Rows[i].Cells[j].Style.ForeColor = Color. _cells[i, j].ColorForeground.;
-                        //Console.BackgroundColor = _cells[i, j].ColorBackground;
+                        _dataGameGrid.Rows[i].Cells[j].Style.ForeColor = WinColorMapper.MapToWinColor(_cells[i, j].ColorForeground);
+                        _dataGameGrid.Rows[i].Cells[j].Style.BackColor = WinColorMapper.MapToWinColor(_cells[i, j].ColorBackground);
                         _dataGameGrid.Rows[i].Cells[j].Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
                         _dataGameGrid.Rows[i].Cells[j].Value = _cells[i, j].Symbol;
                     }
-                    //else
-                    //{
-                    //    Console.Write(' ');
-                    //}
-
-                    //_dataGameGrid.Rows[i].Cells[j].Value = "H";
+                    else
+                    {
+                        _dataGameGrid.Rows[i].Cells[j].Style.ForeColor = WinColorMapper.MapToWinColor(CellColor.RouteForeground);
+                        _dataGameGrid.Rows[i].Cells[j].Style.BackColor = WinColorMapper.MapToWinColor(CellColor.RouteBackground);
+                    }
                 }
             }
 
+            _dataGameGrid.Rows[_player.PositionTop].Cells[_player.PositionLeft].Selected = true;
 
 
-            //_dataGameGrid.Rows[0].Cells[0].Value = "H";
-
-            }
+        }
     }
 }
