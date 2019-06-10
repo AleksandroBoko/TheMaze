@@ -4,6 +4,7 @@
     {
         Won,
         Lost,
-        Exit
+        Exit,
+        Continue
     }
 }
