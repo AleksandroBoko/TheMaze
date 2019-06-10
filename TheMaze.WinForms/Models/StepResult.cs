@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TheMaze.Core.Enums;
+﻿using TheMaze.Core.Enums;
 
 namespace TheMaze.WinForms.Models
 {

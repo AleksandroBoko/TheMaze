@@ -1,14 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using TheMaze.Core.Configurations;
 using TheMaze.Core.Enums;
+using TheMaze.Core.Models;
 using TheMaze.Core.Models.GameObjects;
 using TheMaze.Core.TextHelpers;
 using TheMaze.WinForms.Models;
@@ -19,8 +13,7 @@ namespace TheMaze.WinForms
     {
         private WinDrawer winDrawer;
         private Player player;
-        private GameObject[,] points;
-        //private TypeFinishGame typeFinishGame;
+        private GameField gameField;
         private readonly GameInfo gameInfo;
 
         public GameFieldView()
@@ -53,9 +46,9 @@ namespace TheMaze.WinForms
             }
         }
 
-        public void SetPoints(GameObject[,] gamePoints)
+        public void SetGameField(GameField field)
         {
-            points = gamePoints;
+            gameField = field;
         }
 
         public void RunDrawer()
@@ -65,28 +58,17 @@ namespace TheMaze.WinForms
                 winDrawer.SetDataGrid(dgGame);
                 winDrawer.Draw();
             }
+
+            dgGame.CurrentCell = dgGame.Rows[player.PositionTop].Cells[player.PositionLeft];
         }
 
         private void dgGame_KeyDown(object sender, KeyEventArgs e)
         {
-            //var key = e;
-            //var send = sender;
-            //var rows = dgGame.RowCount;
-            //var colums = dgGame.ColumnCount;
-
             var result = MovementHandler(e);
             if (result != null && result.TypeFinishGame != TypeFinishGame.Continue)
             {
                 HandleResultGame(result);
             }
-
-            
-
-            //if (key.KeyCode != Keys.Down)
-            //{
-            //    key.SuppressKeyPress = true;
-
-            //}
         }
 
         private void HandleResultGame(StepResult stepResult)
@@ -118,12 +100,11 @@ namespace TheMaze.WinForms
         private bool NextStepHandler(FieldTypes fieldType, int nextRowPosition, int nextColumnPosition)
         {
             var result = true;
-            //var points = gameField.Cells;
             switch (fieldType)
             {
                 case FieldTypes.OpenedDoor:
-                    if ((player as Player).CountGamePoints < Configuration.GAMEPOINTS_TO_EXIT
-                        || (player as Player).CountSteps > Configuration.STEPS_TO_CLOSE_DOOR)
+                    if (player.CountGamePoints < Configuration.GAMEPOINTS_TO_EXIT
+                        || player.CountSteps > Configuration.STEPS_TO_CLOSE_DOOR)
                     {
                         result = false;
                     }
@@ -133,86 +114,69 @@ namespace TheMaze.WinForms
                     result = false;
                     break;
                 case FieldTypes.ClosedDoor:
-                    result = (player as Player).CountKeys > 0;
+                    result = player.CountKeys > 0;
                     break;
                 case FieldTypes.Coin:
-                    if (points[nextRowPosition, nextColumnPosition].IsActive)
+                    if (gameField.Cells[nextRowPosition, nextColumnPosition].IsActive)
                     {
                         player.IncreaseCoins();
-                        points[nextRowPosition, nextColumnPosition].IsActive = false;
+                        gameField.Cells[nextRowPosition, nextColumnPosition].IsActive = false;
                         tbxCoins.Text = player.CountCoins.ToString();
                         tbxTotalGamePoints.Text = player.CountGamePoints.ToString();
                     }
 
                     break;
                 case FieldTypes.Key:
-                    if (points[nextRowPosition, nextColumnPosition].IsActive)
+                    if (gameField.Cells[nextRowPosition, nextColumnPosition].IsActive)
                     {
                         player.IncreaseKeys();
-                        points[nextRowPosition, nextColumnPosition].IsActive = false;
+                        gameField.Cells[nextRowPosition, nextColumnPosition].IsActive = false;
                         tbxKeys.Text = player.CountKeys.ToString();
                         tbxTotalGamePoints.Text = player.CountGamePoints.ToString();
                     }
 
                     break;
                 case FieldTypes.Trap:
-                    if (points[nextRowPosition, nextColumnPosition].IsActive)
+                    if (gameField.Cells[nextRowPosition, nextColumnPosition].IsActive)
                     {
                         player.DecreaseLifePoints();
-                        points[nextRowPosition, nextColumnPosition].IsActive = false;
+                        gameField.Cells[nextRowPosition, nextColumnPosition].IsActive = false;
                         tbxLifePoints.Text = player.CountLifePoints.ToString();
-                        //var currentRow = Console.CursorTop;
-                        //var currentColumn = Console.CursorLeft;
-                        ////consoleHelper.ShowPlayerLifePoints((player as Player).CountLifePoints,
-                        ////    Player.MAX_LIFE_POINTS);
-                        //Console.SetCursorPosition(currentColumn, currentRow);
                     }
 
                     break;
                 case FieldTypes.DeadlyTrap:
-                    if (points[nextRowPosition, nextColumnPosition].IsActive)
+                    if (gameField.Cells[nextRowPosition, nextColumnPosition].IsActive)
                     {
                         for (int i = 0; i < Player.MAX_LIFE_POINTS; i++)
                         {
                             player.DecreaseLifePoints();
                         }
 
-                        points[nextRowPosition, nextColumnPosition].IsActive = false;
+                        gameField.Cells[nextRowPosition, nextColumnPosition].IsActive = false;
                         tbxLifePoints.Text = player.CountLifePoints.ToString();
-                        //var currentRow = Console.CursorTop;
-                        //var currentColumn = Console.CursorLeft;
-                        ////consoleHelper.ShowPlayerLifePoints((player as Player).CountLifePoints,
-                        ////    Player.MAX_LIFE_POINTS);
-                        //Console.SetCursorPosition(currentColumn, currentRow);
                     }
 
                     break;
                 case FieldTypes.Prize:
-                    if (points[nextRowPosition, nextColumnPosition].IsActive)
+                    if (gameField.Cells[nextRowPosition, nextColumnPosition].IsActive)
                     {
-                        points[nextRowPosition, nextColumnPosition].IsActive = false;
+                        gameField.Cells[nextRowPosition, nextColumnPosition].IsActive = false;
                         player.IncreaseStepPerTime();
                         player.IncreaseGamePoints(Configuration.PRIZE_VALUE);
                     }
 
                     break;
                 case FieldTypes.Crystal:
-                    if (points[nextRowPosition, nextColumnPosition].IsActive)
+                    if (gameField.Cells[nextRowPosition, nextColumnPosition].IsActive)
                     {
-                        points[nextRowPosition, nextColumnPosition].IsActive = false;
+                        gameField.Cells[nextRowPosition, nextColumnPosition].IsActive = false;
                         player.IncreaseCrystals();
                         tbxCrystals.Text = player.CountCrystals.ToString();
                         tbxTotalGamePoints.Text = player.CountGamePoints.ToString();
                     }
 
                     break;
-                //case FieldTypes.Portal:
-                //    if (points[nextRowPosition, nextColumnPosition].IsActive)
-                //    {
-                //        points[nextRowPosition, nextColumnPosition].IsActive = false;
-                //    }
-
-                //    break;
             }
 
             return result;
@@ -239,7 +203,7 @@ namespace TheMaze.WinForms
                                 
                                 if (player.PositionTop < Configuration.ROW_NUMBER - 1)
                                 {
-                                    nextPointType = (points[player.PositionTop + 1, player.PositionLeft] as Cell).FieldType;
+                                    nextPointType = (gameField.Cells[player.PositionTop + 1, player.PositionLeft] as Cell).FieldType;
                                     var canDoNextStep = NextStepHandler(nextPointType, player.PositionTop + 1, player.PositionLeft);
                                     if (canDoNextStep)
                                     {
@@ -249,7 +213,7 @@ namespace TheMaze.WinForms
                                         isNextStepDone = true;
                                         player.IncreaseSteps();
                                         tbxSteps.Text = player.CountSteps.ToString();
-                                }
+                                    }
                                 else
                                     {
                                         key.SuppressKeyPress = true;
@@ -260,9 +224,6 @@ namespace TheMaze.WinForms
                                     key.SuppressKeyPress = true;
                                 }
 
-                                //DrawPlayer();
-                                //player.IncreaseSteps();
-
                                 break;
                             }
                         case Keys.Up:
@@ -270,7 +231,7 @@ namespace TheMaze.WinForms
                                 //DrawRoute(stepsDone);
                                 if (player.PositionTop > 0)
                                 {
-                                    nextPointType = (points[player.PositionTop - 1, player.PositionLeft] as Cell).FieldType;
+                                    nextPointType = (gameField.Cells[player.PositionTop - 1, player.PositionLeft] as Cell).FieldType;
                                     if (NextStepHandler(nextPointType, player.PositionTop - 1, player.PositionLeft))
                                     {
                                         winDrawer.DrawRoute(player.PositionTop, player.PositionLeft);
@@ -290,8 +251,6 @@ namespace TheMaze.WinForms
                                     key.SuppressKeyPress = true;
                                 }
 
-                            //DrawPlayer();
-                            //player.IncreaseSteps();
                                 break;
                             }
                         case Keys.Left:
@@ -299,7 +258,7 @@ namespace TheMaze.WinForms
                                 //DrawRoute(stepsDone);
                                 if (player.PositionLeft > 0)
                                 {
-                                    nextPointType = (points[player.PositionTop, player.PositionLeft - 1] as Cell)
+                                    nextPointType = (gameField.Cells[player.PositionTop, player.PositionLeft - 1] as Cell)
                                         .FieldType;
                                     if (NextStepHandler(nextPointType, player.PositionTop, player.PositionLeft - 1))
                                     {
@@ -320,8 +279,6 @@ namespace TheMaze.WinForms
                                     key.SuppressKeyPress = true;
                                 }
 
-                            //DrawPlayer();
-                            //player.IncreaseSteps();
                                 break;
                             }
                         case Keys.Right:
@@ -329,7 +286,7 @@ namespace TheMaze.WinForms
                                 //DrawRoute(stepsDone);
                                 if (player.PositionLeft < Configuration.COLUMN_NUMBER - 1)
                                 {
-                                    nextPointType = (points[player.PositionTop, player.PositionLeft + 1] as Cell).FieldType;
+                                    nextPointType = (gameField.Cells[player.PositionTop, player.PositionLeft + 1] as Cell).FieldType;
                                     if (NextStepHandler(nextPointType, player.PositionTop, player.PositionLeft + 1))
                                     {
                                         winDrawer.DrawRoute(player.PositionTop, player.PositionLeft);
@@ -349,8 +306,6 @@ namespace TheMaze.WinForms
                                     key.SuppressKeyPress = true;
                                 }
 
-                                //DrawPlayer();
-                                //player.IncreaseSteps();
                                 break;
                             }
                         case Keys.Escape:
@@ -361,9 +316,10 @@ namespace TheMaze.WinForms
                             }
                         case Keys.F2:
                             {
-                                //SaveGame();
-                                //DrawPlayer(stepsDone == 0);
-                                break;
+                                gameField.Save();
+                                player.Save();
+                            //DrawPlayer(stepsDone == 0);
+                            break;
                             }
                         //case ConsoleKey.Enter:
                         //    {
@@ -392,35 +348,22 @@ namespace TheMaze.WinForms
                         isExit = true;
                     }
                 else if (isNextStepDone && nextPointType == FieldTypes.Portal
-                                        && points[player.PositionTop, player.PositionLeft].IsActive)
+                                        && gameField.Cells[player.PositionTop, player.PositionLeft].IsActive)
                 {
-                    points[player.PositionTop, player.PositionLeft].IsActive = false;
+                    gameField.Cells[player.PositionTop, player.PositionLeft].IsActive = false;
                     winDrawer.DrawRoute(player.PositionTop, player.PositionLeft);
-                    
-                    
-                    //dgGame.Rows[player.PositionTop].Cells[player.PositionLeft].Selected = false;
                     //player.IncreaseGamePoints(Configuration.PORTAL_VALUE);
                     var random = new Random();
                     while (true)
                     {
                         var row = random.Next(0, Configuration.ROW_NUMBER - 1);
                         var column = random.Next(0, Configuration.COLUMN_NUMBER - 1);
-                        if ((points[row, column] as Cell).FieldType == FieldTypes.Route)
+                        if ((gameField.Cells[row, column] as Cell).FieldType == FieldTypes.Route)
                         {
                             player.SetPosition(row, column);
                             winDrawer.DrawPlayer(player.PositionTop, player.PositionLeft);
-                            var cell = dgGame.Rows[row].Cells[column]; 
-                            cell.Selected = true;
                             dgGame.CurrentCell = dgGame.Rows[row].Cells[column];
-
-                            //drawer.DrawRoute();
-                            //Console.CursorLeft -= 1;
-
-                            //Console.SetCursorPosition(column, row);
-                            //player.SetPosition(row, column);
-
-                            //drawer.DrawPlayer();
-                            //Console.CursorLeft -= 1;
+                            dgGame.CurrentCell.Selected = true;
                             break;
                         }
 
@@ -439,8 +382,6 @@ namespace TheMaze.WinForms
         {
             var time = (int)(DateTime.Now - player.StarTime).TotalSeconds;
             var resultText = String.Empty;
-            //TypeFinishGame gameStatus = TypeFinishGame.Continue;
-
             switch (typeFinishGame)
             {
                 case TypeFinishGame.Won:

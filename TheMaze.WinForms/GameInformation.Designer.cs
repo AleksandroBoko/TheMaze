@@ -1,5 +1,4 @@
-﻿using TheMaze.Core.Enums;
-using TheMaze.Core.TextHelpers;
+﻿using TheMaze.Core.TextHelpers;
 
 namespace TheMaze.WinForms
 {

@@ -53,6 +53,7 @@
             this.dgGame.AllowUserToResizeRows = false;
             this.dgGame.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dgGame.ColumnHeadersVisible = false;
+            this.dgGame.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.dgGame.ImeMode = System.Windows.Forms.ImeMode.Disable;
             this.dgGame.Location = new System.Drawing.Point(12, 12);
             this.dgGame.Name = "dgGame";

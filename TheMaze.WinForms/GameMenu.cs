@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using TheMaze.Core.Enums;
 using TheMaze.Core.Models;
@@ -17,6 +10,7 @@ namespace TheMaze.WinForms
     public partial class GameMenu : Form
     {
         private GameObject _player { get; set; }
+
 
         public GameMenu()
         {
@@ -31,13 +25,14 @@ namespace TheMaze.WinForms
             var drawer = new WinDrawer(gameField.Cells);
 
             (_player as Player).ResetData();
+            (_player as Player).StarTime = DateTime.Now;
 
             drawer.SetPlayer(_player);
             var gameView = new GameFieldView();
 
             gameView.SetDrawer(drawer);
             gameView.SetPlayer(_player as Player);
-            gameView.SetPoints(gameField.Cells);
+            gameView.SetGameField(gameField);
             gameView.RunDrawer();
             gameView.Show();
         }
@@ -49,20 +44,38 @@ namespace TheMaze.WinForms
             var drawer = new WinDrawer(gameField.Cells);
 
             (_player as Player).ResetData();
+            (_player as Player).StarTime = DateTime.Now;
 
             drawer.SetPlayer(_player);
             var gameView = new GameFieldView();
 
             gameView.SetDrawer(drawer);
             gameView.SetPlayer(_player as Player);
-            gameView.SetPoints(gameField.Cells);
+            gameView.SetGameField(gameField);
             gameView.RunDrawer();
             gameView.Show();
         }
 
         private void btnLoadGame_Click(object sender, EventArgs e)
         {
-            //
+            var gameField = new GameField();
+            if (!(_player as Player).Load() | !gameField.Load())
+            {
+                MessageBox.Show("The version of last saved game is not available");
+            }
+            else
+            {
+                var drawer = new WinDrawer(gameField.Cells);
+                drawer.SetPlayer(_player);
+
+                var gameView = new GameFieldView();
+
+                gameView.SetDrawer(drawer);
+                gameView.SetPlayer(_player as Player);
+                gameView.SetGameField(gameField);
+                gameView.RunDrawer();
+                gameView.Show();
+            }
         }
 
         private void btnSetPlayerName_Click(object sender, EventArgs e)
@@ -76,7 +89,6 @@ namespace TheMaze.WinForms
         {
             var w = new GameInformation();
             w.Text = "Instruction";
-            //w.SetState(MenuItemType.Information);
             w.SetInformationText(new GameInfo().GetInstruction().ToString());
             w.Show();
         }
