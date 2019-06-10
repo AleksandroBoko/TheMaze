@@ -146,5 +146,19 @@ namespace TheMaze.Core.Models.GameObjects
             CountCrystals++;
             IncreaseGamePoints(Configuration.CRYSTAL_VALUE);
         }
+
+        public void ResetData()
+        {
+            CountSteps = 0;
+            CountKeys = 0;
+            CountCoins = 0;
+            CountCrystals = 0;
+            CountGamePoints = 0;
+
+            PositionTop = 0;
+            PositionLeft = 0;
+            StepsPerTime = 1;
+            CountLifePoints = MAX_LIFE_POINTS;            
+        }
     }
 }
