@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using TheMaze.Core.Enums;
 using TheMaze.Core.Models;
 using TheMaze.Core.Models.GameObjects;
+using TheMaze.Core.TextHelpers;
 
 namespace TheMaze.WinForms
 {
@@ -28,8 +29,15 @@ namespace TheMaze.WinForms
             var gameField = new GameField();
             gameField.Build(MenuItemType.Play);
             var drawer = new WinDrawer(gameField.Cells);
+
+            (_player as Player).ResetData();
+
+            drawer.SetPlayer(_player);
             var gameView = new GameFieldView();
+
             gameView.SetDrawer(drawer);
+            gameView.SetPlayer(_player as Player);
+            gameView.SetPoints(gameField.Cells);
             gameView.RunDrawer();
             gameView.Show();
         }
@@ -39,9 +47,15 @@ namespace TheMaze.WinForms
             var gameField = new GameField();
             gameField.Build(MenuItemType.QuickPlay);
             var drawer = new WinDrawer(gameField.Cells);
+
+            (_player as Player).ResetData();
+
             drawer.SetPlayer(_player);
             var gameView = new GameFieldView();
+
             gameView.SetDrawer(drawer);
+            gameView.SetPlayer(_player as Player);
+            gameView.SetPoints(gameField.Cells);
             gameView.RunDrawer();
             gameView.Show();
         }
@@ -62,7 +76,8 @@ namespace TheMaze.WinForms
         {
             var w = new GameInformation();
             w.Text = "Instruction";
-            w.SetState(MenuItemType.Information);
+            //w.SetState(MenuItemType.Information);
+            w.SetInformationText(new GameInfo().GetInstruction().ToString());
             w.Show();
         }
 

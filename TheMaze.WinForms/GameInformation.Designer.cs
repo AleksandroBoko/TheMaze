@@ -39,9 +39,14 @@ namespace TheMaze.WinForms
             // 
             // rtbGameInformation
             // 
+            this.rtbGameInformation.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.rtbGameInformation.Font = new System.Drawing.Font("Arial Narrow", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.rtbGameInformation.Location = new System.Drawing.Point(12, 12);
             this.rtbGameInformation.MinimumSize = new System.Drawing.Size(400, 400);
             this.rtbGameInformation.Name = "rtbGameInformation";
+            this.rtbGameInformation.ReadOnly = true;
             this.rtbGameInformation.Size = new System.Drawing.Size(400, 400);
             this.rtbGameInformation.TabIndex = 0;
             this.rtbGameInformation.Text = "";
@@ -63,6 +68,7 @@ namespace TheMaze.WinForms
             this.ClientSize = new System.Drawing.Size(423, 454);
             this.Controls.Add(this.btnOk);
             this.Controls.Add(this.rtbGameInformation);
+            this.MaximizeBox = false;
             this.Name = "GameInformation";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Game Information";
@@ -72,14 +78,16 @@ namespace TheMaze.WinForms
 
         #endregion
 
-        public void SetState(MenuItemType menuItemType)
+        public void SetInformationText(string information)
         {
-            switch (menuItemType)
-            {
-                case MenuItemType.Information:
-                    rtbGameInformation.Text = gameTextInfo.GetInstruction().ToString();
-                    break;
-            }
+            rtbGameInformation.Clear();
+            rtbGameInformation.Text = information;
+            //switch (menuItemType)
+            //{
+            //    case MenuItemType.Information:
+            //        rtbGameInformation.Text = gameTextInfo.GetInstruction().ToString();
+            //        break;
+            //}
         }
 
         private System.Windows.Forms.RichTextBox rtbGameInformation;

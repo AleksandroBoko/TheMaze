@@ -65,6 +65,7 @@
       <DependentUpon>GameMenu.cs</DependentUpon>
     </Compile>
     <Compile Include="Mappers\WinColorMapper.cs" />
+    <Compile Include="Models\StepResult.cs" />
     <Compile Include="PlayerEditor.cs">
       <SubType>Form</SubType>
     </Compile>
