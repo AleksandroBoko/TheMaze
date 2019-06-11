@@ -81,6 +81,7 @@
     <Compile Include="GameInformation.Designer.cs">
       <DependentUpon>GameInformation.cs</DependentUpon>
     </Compile>
+    <Compile Include="Services\SoundService.cs" />
     <Compile Include="WinDrawer.cs" />
     <EmbeddedResource Include="GameFieldView.resx">
       <DependentUpon>GameFieldView.cs</DependentUpon>
@@ -128,6 +129,12 @@
   <ItemGroup />
   <ItemGroup>
     <Content Include="Resources\Audio\bensound-summer.wav" />
+    <Content Include="Resources\Audio\closed.wav" />
+    <Content Include="Resources\Audio\item.wav" />
+    <Content Include="Resources\Audio\key.wav" />
+    <Content Include="Resources\Audio\lose.wav" />
+    <Content Include="Resources\Audio\trap.wav" />
+    <Content Include="Resources\Audio\win.wav" />
     <Content Include="Resources\Images\closeddoor.png" />
     <Content Include="Resources\Images\coin.png" />
     <Content Include="Resources\Images\crystal.png" />
