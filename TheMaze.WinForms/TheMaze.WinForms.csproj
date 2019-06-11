@@ -125,8 +125,20 @@
       <Name>TheMaze.Core</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Resources\Images\" />
+    <Content Include="Resources\Audio\bensound-summer.wav" />
+    <Content Include="Resources\Images\closeddoor.png" />
+    <Content Include="Resources\Images\coin.png" />
+    <Content Include="Resources\Images\crystal.png" />
+    <Content Include="Resources\Images\key.png" />
+    <Content Include="Resources\Images\opendoor.png" />
+    <Content Include="Resources\Images\player.png" />
+    <Content Include="Resources\Images\portal.png" />
+    <Content Include="Resources\Images\prize.png" />
+    <Content Include="Resources\Images\route.png" />
+    <Content Include="Resources\Images\trap.png" />
+    <Content Include="Resources\Images\wall.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

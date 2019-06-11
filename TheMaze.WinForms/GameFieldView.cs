@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Media;
 using System.Windows.Forms;
 using TheMaze.Core.Configurations;
 using TheMaze.Core.Enums;
@@ -15,11 +17,12 @@ namespace TheMaze.WinForms
         private Player player;
         private GameField gameField;
         private readonly GameInfo gameInfo;
+        private SoundPlayer soundPlayer;
 
         public GameFieldView()
         {
             InitializeComponent();
-            gameInfo = new GameInfo();
+            gameInfo = new GameInfo();            
         }
 
         public void SetDrawer(WinDrawer drawer)
@@ -95,6 +98,9 @@ namespace TheMaze.WinForms
                     game.Show();
                     break;
             }
+
+            soundPlayer.Stop();
+            soundPlayer.Dispose();
         }
 
         private bool NextStepHandler(FieldTypes fieldType, int nextRowPosition, int nextColumnPosition)
@@ -400,6 +406,13 @@ namespace TheMaze.WinForms
                 TypeFinishGame = typeFinishGame,
                 Text = resultText
             };
+        }
+
+        public void RunMusic()
+        {
+            soundPlayer = new SoundPlayer();
+            soundPlayer.SoundLocation = $"{Directory.GetParent(Environment.CurrentDirectory).Parent.FullName}/Resources/Audio/bensound-summer.wav";
+            soundPlayer.Play();
         }
     }
 }
