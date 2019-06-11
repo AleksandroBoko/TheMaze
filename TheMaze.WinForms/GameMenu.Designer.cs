@@ -1,4 +1,9 @@
-﻿namespace TheMaze.WinForms
+﻿using System;
+using System.IO;
+using System.Media;
+using System.Threading;
+
+namespace TheMaze.WinForms
 {
     partial class GameMenu
     {
@@ -124,6 +129,17 @@
             this.Text = "Menu";
             this.ResumeLayout(false);
             this.PerformLayout();
+
+            var thread = new Thread(x =>
+            {
+                using (var soundPlayer = new SoundPlayer())
+                {
+                    soundPlayer.SoundLocation = $"{Directory.GetParent(Environment.CurrentDirectory).Parent.FullName}/Resources/Audio/bensound-summer.wav";
+                    soundPlayer.Play();
+                }
+            });
+
+            thread.Start();
 
         }
 

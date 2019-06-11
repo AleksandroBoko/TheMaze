@@ -9,6 +9,7 @@
         public const int COINS_TO_EXIT = 10;
         public const int CRYSTALS_TO_EXIT = 10;
         public const int GAMEPOINTS_TO_EXIT = 10;
+        public const int TIME_TO_CLOSE_DOOR = 30;
 
         public const int COUNT_COINS = 100;
         public const int COUNT_CLOSED_DOORS = 3;

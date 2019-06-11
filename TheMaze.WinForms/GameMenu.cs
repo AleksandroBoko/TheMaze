@@ -1,4 +1,7 @@
 ﻿using System;
+using System.IO;
+using System.Media;
+using System.Threading;
 using System.Windows.Forms;
 using TheMaze.Core.Enums;
 using TheMaze.Core.Models;
@@ -34,7 +37,6 @@ namespace TheMaze.WinForms
             gameView.SetPlayer(_player as Player);
             gameView.SetGameField(gameField);
             gameView.RunDrawer();
-            gameView.RunMusic();
             gameView.Show();
         }
 
@@ -54,7 +56,6 @@ namespace TheMaze.WinForms
             gameView.SetPlayer(_player as Player);
             gameView.SetGameField(gameField);
             gameView.RunDrawer();
-            gameView.RunMusic();
             gameView.Show();
         }
 
@@ -76,7 +77,6 @@ namespace TheMaze.WinForms
                 gameView.SetPlayer(_player as Player);
                 gameView.SetGameField(gameField);
                 gameView.RunDrawer();
-                gameView.RunMusic();
                 gameView.Show();
             }
         }
