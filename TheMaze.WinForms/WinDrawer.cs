@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
 using TheMaze.Core.Enums;
 using TheMaze.Core.Models.GameObjects;
@@ -38,8 +40,8 @@ namespace TheMaze.WinForms
 
             for (var i = 0; i < _cells.GetLength(0); i++)
             {
-                var col = new DataGridViewColumn();
-                col.CellTemplate = new DataGridViewTextBoxCell();
+                var col = new DataGridViewImageColumn();
+                col.CellTemplate = new DataGridViewImageCell();
                 col.Width = 20;
                 _dataGameGrid.Columns.Add(col);
 
@@ -58,7 +60,8 @@ namespace TheMaze.WinForms
                         _dataGameGrid.Rows[i].Cells[j].Style.ForeColor = WinColorMapper.MapToWinColor(_cells[i, j].ColorForeground);
                         _dataGameGrid.Rows[i].Cells[j].Style.BackColor = WinColorMapper.MapToWinColor(_cells[i, j].ColorBackground);
                         _dataGameGrid.Rows[i].Cells[j].Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
-                        _dataGameGrid.Rows[i].Cells[j].Value = _cells[i, j].Symbol;
+                        _dataGameGrid.Rows[i].Cells[j].Value =
+                            WinImageMapper.GetCellImageByType((_cells[i, j] as Cell).FieldType);
                     }
                     else
                     {
@@ -77,8 +80,8 @@ namespace TheMaze.WinForms
             _dataGameGrid.Rows[row].Cells[column].Style.ForeColor = WinColorMapper.MapToWinColor(CellColor.RouteForeground);
             _dataGameGrid.Rows[row].Cells[column].Style.BackColor = WinColorMapper.MapToWinColor(CellColor.RouteBackground);
             _dataGameGrid.Rows[row].Cells[column].Style.SelectionBackColor = WinColorMapper.MapToWinColor(CellColor.RouteBackground);
-            _dataGameGrid.Rows[row].Cells[column].Value = String.Empty;
             _dataGameGrid.Rows[row].Cells[column].Selected = false;
+            _dataGameGrid.Rows[row].Cells[column].Value = WinImageMapper.GetCellImageByType(FieldTypes.Route);;
         }
 
         public void DrawPlayer(int row, int column)
@@ -87,8 +90,9 @@ namespace TheMaze.WinForms
             _dataGameGrid.Rows[row].Cells[column].Style.BackColor = WinColorMapper.MapToWinColor(CellColor.PlayerBackground);
             _dataGameGrid.Rows[row].Cells[column].Style.SelectionForeColor = WinColorMapper.MapToWinColor(CellColor.PlayerBackground);
             _dataGameGrid.Rows[row].Cells[column].Style.SelectionBackColor = WinColorMapper.MapToWinColor(CellColor.PlayerForeground);
-            _dataGameGrid.Rows[row].Cells[column].Value = (_player as Player).Symbol;
             _dataGameGrid.Rows[row].Cells[column].Selected = true;
+            _dataGameGrid.Rows[row].Cells[column].Value = Image.FromFile(
+                $"{Directory.GetParent(Environment.CurrentDirectory).Parent.FullName}/Resources/Images/player.png");
         }
     }
 }

@@ -65,6 +65,7 @@
       <DependentUpon>GameMenu.cs</DependentUpon>
     </Compile>
     <Compile Include="Mappers\WinColorMapper.cs" />
+    <Compile Include="Mappers\WinImageMapper.cs" />
     <Compile Include="Models\StepResult.cs" />
     <Compile Include="PlayerEditor.cs">
       <SubType>Form</SubType>
@@ -123,6 +124,9 @@
       <Project>{a286a531-838a-410b-8a15-7b0157f73190}</Project>
       <Name>TheMaze.Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\Images\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
